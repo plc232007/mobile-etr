@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "ETR • Minha terra",
+    "slug": "etr-mobile",
+    "scheme": "etr",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "br.gov.df.etr.prototipo"
+    },
+    "android": {
+      "package": "br.gov.df.etr.prototipo"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "name": "ETR • Minha terra"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Selecione uma foto para anexar ao seu pedido.",
+          "cameraPermission": "Use a câmera para fotografar um documento.",
+          "microphonePermission": false
+        }
+      ],
+      "expo-font",
+      "expo-sharing"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

@@ -1,0 +1,238 @@
+import { AppData } from "@/types";
+export const initialData: AppData = {
+  user: {
+    name: "João da Silva",
+    cpf: "***.***.***-**",
+    email: "joao.silva@example.com",
+    phone: "(61) 99999-0123",
+  },
+  properties: [
+    {
+      id: "boa-esperanca",
+      name: "Chácara Boa Esperança",
+      region: "Sobradinho — DF",
+      area: 12.4,
+      identifier: "ETR-DF-001284",
+      status: "Regularização em andamento",
+    },
+    {
+      id: "sao-jose",
+      name: "Fazenda São José",
+      region: "Planaltina — DF",
+      area: 28.7,
+      identifier: "ETR-DF-002196",
+      status: "Documentação pendente",
+      occurrence:
+        "Há uma atualização na representação dos limites do imóvel. Confira as informações com nossa equipe no próximo atendimento.",
+    },
+  ],
+  processes: [
+    {
+      id: "regularizacao",
+      protocol: "2026.000123",
+      type: "Regularização fundiária",
+      propertyId: "boa-esperanca",
+      status: "Análise técnica",
+      openedAt: "2026-08-03",
+      stage: 2,
+      message:
+        "Nossa equipe está conferindo as informações do seu imóvel. Envie o CAR para que possamos concluir esta etapa.",
+      movements: [
+        {
+          date: "2026-09-15",
+          title: "Seu documento foi recebido",
+          description:
+            "O comprovante de ocupação já está disponível para a equipe.",
+        },
+        {
+          date: "2026-09-12",
+          title: "Análise técnica iniciada",
+          description: "Seu processo avançou para a avaliação do imóvel.",
+        },
+        {
+          date: "2026-08-08",
+          title: "Documentação inicial conferida",
+          description: "Os documentos iniciais foram conferidos pela equipe.",
+        },
+      ],
+    },
+    {
+      id: "cadastro",
+      protocol: "2026.000098",
+      type: "Atualização cadastral",
+      propertyId: "sao-jose",
+      status: "Documentação pendente",
+      openedAt: "2026-08-01",
+      stage: 1,
+      movements: [
+        {
+          date: "2026-09-10",
+          title: "Cadastro em conferência",
+          description: "As informações cadastrais estão sendo avaliadas.",
+        },
+      ],
+      message: "Confira os documentos do imóvel para preparar a próxima etapa.",
+    },
+  ],
+  pending: [
+    {
+      id: "car",
+      processId: "regularizacao",
+      propertyId: "boa-esperanca",
+      title: "Cadastro Ambiental Rural — CAR",
+      reason:
+        "Precisamos do CAR para concluir a análise ambiental do seu imóvel.",
+      instruction:
+        "Anexe o recibo de inscrição no CAR em PDF ou uma foto legível. Confira se o nome e os dados do imóvel aparecem no arquivo.",
+      deadline: "2026-09-25",
+      resolved: false,
+    },
+  ],
+  documents: [
+    {
+      id: "identidade",
+      name: "Documento de identidade",
+      category: "Pessoais",
+      status: "Válido",
+      issuedAt: "2026-02-03",
+      fileName: "identidade.pdf",
+    },
+    {
+      id: "ocupacao",
+      name: "Comprovante de ocupação",
+      category: "Do imóvel",
+      propertyId: "boa-esperanca",
+      status: "Recebido",
+      issuedAt: "2026-09-15",
+      fileName: "comprovante-ocupacao.pdf",
+    },
+    {
+      id: "endereco",
+      name: "Comprovante de endereço",
+      category: "Comprovantes",
+      status: "Atualização necessária",
+      issuedAt: "2025-04-10",
+      fileName: "endereco.pdf",
+    },
+    {
+      id: "contrato",
+      name: "Contrato de uso — São José",
+      category: "Contratos",
+      propertyId: "sao-jose",
+      status: "Válido",
+      issuedAt: "2025-06-12",
+      fileName: "contrato.pdf",
+    },
+  ],
+  payments: [
+    {
+      id: "setembro",
+      propertyId: "boa-esperanca",
+      description: "Parcela CDU • Setembro",
+      value: 1245.7,
+      dueAt: "2026-09-20",
+      status: "Em aberto",
+    },
+    {
+      id: "agosto",
+      propertyId: "boa-esperanca",
+      description: "Parcela CDU • Agosto",
+      value: 1245.7,
+      dueAt: "2026-08-20",
+      status: "Pago",
+      paidAt: "2026-08-18",
+    },
+    {
+      id: "julho",
+      propertyId: "sao-jose",
+      description: "Parcela CDU • Julho",
+      value: 876.2,
+      dueAt: "2026-07-20",
+      status: "Vencido",
+    },
+  ],
+  notices: [
+    {
+      id: "03-2026",
+      number: "03/2026",
+      title: "Fazenda Contagem de São João",
+      region: "Sobradinho II",
+      deadline: "2026-10-03",
+      status: "Em andamento",
+      relatedPropertyId: "boa-esperanca",
+      following: false,
+      description:
+        "Chamamento para apresentação de documentos de ocupantes da região de Contagem de São João. A equipe avaliará a documentação para dar continuidade à regularização. A relação com seu imóvel é indicativa e será confirmada pela ETR.",
+    },
+    {
+      id: "02-2026",
+      number: "02/2026",
+      title: "Núcleo Rural de Planaltina",
+      region: "Planaltina",
+      deadline: "2026-08-30",
+      status: "Encerrado",
+      relatedPropertyId: "sao-jose",
+      following: false,
+      description:
+        "Etapa de atualização cadastral dos ocupantes do núcleo rural. O prazo para envio foi encerrado e os pedidos estão em análise.",
+    },
+  ],
+  alerts: [
+    {
+      id: "a1",
+      title: "Seu documento foi recebido",
+      description:
+        "O comprovante de ocupação foi anexado ao processo 2026.000123.",
+      date: "2026-09-15",
+      type: "Processo",
+      href: "/processo/regularizacao",
+      read: false,
+    },
+    {
+      id: "a2",
+      title: "Precisamos de mais um documento",
+      description: "Envie o CAR para continuarmos a análise do seu imóvel.",
+      date: "2026-09-14",
+      type: "Pendência",
+      href: "/pendencias",
+      read: false,
+    },
+    {
+      id: "a3",
+      title: "Seu boleto vence em 5 dias",
+      description: "A parcela de R$ 1.245,70 vence em 20 de setembro.",
+      date: "2026-09-15",
+      type: "Boleto",
+      href: "/boleto/setembro",
+      read: false,
+    },
+    {
+      id: "a4",
+      title: "Seu processo avançou",
+      description: "A análise técnica da Chácara Boa Esperança começou.",
+      date: "2026-09-12",
+      type: "Processo",
+      href: "/processo/regularizacao",
+      read: true,
+    },
+  ],
+  news: [
+    {
+      id: "regularizacao-rural",
+      title: "Mais um passo para quem vive e produz no campo",
+      date: "2026-09-12",
+      category: "Regularização rural",
+      body: "Nesta notícia fictícia de demonstração, a ETR inicia uma nova etapa de análise de imóveis rurais no Distrito Federal.\n\nO trabalho aproxima as famílias da regularização e ajuda a organizar os documentos necessários para cada etapa.\n\nAcompanhe seu processo pelo aplicativo. Se houver alguma pendência, você encontrará orientações simples sobre o que enviar. Para tirar dúvidas, acesse Atendimento.",
+    },
+    {
+      id: "documentacao",
+      title: "Saiba como preparar os documentos do seu imóvel",
+      date: "2026-09-08",
+      category: "Orientações",
+      body: "Organize sua identificação, os comprovantes de ocupação e o recibo do Cadastro Ambiental Rural. Confira se as imagens estão legíveis antes do envio.\n\nA carteira de documentos ajuda você a guardar e reutilizar arquivos nos seus requerimentos. Conteúdo ilustrativo para este protótipo.",
+    },
+  ],
+  draft: null,
+  appointments: [],
+  preferences: { process: true, payments: true, notices: true, offline: false },
+};
