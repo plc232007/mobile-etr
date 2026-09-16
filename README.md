@@ -4,7 +4,7 @@ Protótipo mobile da central pessoal do cidadão, implementado a partir das 39 s
 
 ## Iniciar
 
-Requer Node.js 20.19+ (validado com Node 22) e npm.
+Requer Node.js 22 e npm. A versão está definida em `.nvmrc` e `package.json`.
 
 ```bash
 npm install
@@ -20,6 +20,22 @@ npm run ios     # simulador iOS, requer macOS e Xcode
 ```
 
 Use um cliente Expo compatível com SDK 55. Câmera e compartilhamento nativo dependem das permissões e recursos do aparelho.
+
+## Publicar na Vercel
+
+O projeto está configurado para publicação web estática. Importe o repositório na Vercel, selecione **Other** como framework e mantenha a raiz do projeto como **Root Directory**. O `vercel.json` define automaticamente:
+
+| Configuração          | Valor                               |
+| --------------------- | ----------------------------------- |
+| Node.js               | `22.x` (definido no `package.json`) |
+| Install Command       | `npm ci`                            |
+| Build Command         | `npm run build`                     |
+| Output Directory      | `dist`                              |
+| Variáveis de ambiente | Nenhuma necessária                  |
+
+Clique em **Deploy**. As rotas internas têm fallback para `index.html`, permitindo abrir links e recarregar telas como `/boletos` e `/processo/regularizacao`.
+
+Passo a passo, alternativa por CLI e verificação após publicar em [docs/deploy-vercel.md](docs/deploy-vercel.md).
 
 ## Percursos para apresentação
 

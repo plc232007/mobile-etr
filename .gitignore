@@ -11,3 +11,6 @@ test-results/
 
 expo-env.d.ts
 # @end expo-cli
+
+# Vercel: vínculo local do projeto
+.vercel/

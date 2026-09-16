@@ -14,7 +14,8 @@
     "test:e2e": "playwright test",
     "build:web": "expo export --platform web",
     "format": "prettier --write src tests docs *.json *.ts *.js README.md",
-    "format:check": "prettier --check src tests docs *.json *.ts *.js README.md"
+    "format:check": "prettier --check src tests docs *.json *.ts *.js README.md",
+    "build": "npm run typecheck && npm run build:web"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
@@ -48,5 +49,8 @@
     "prettier": "^3.9.6",
     "tsx": "^4.20.0",
     "typescript": "~5.9.2"
+  },
+  "engines": {
+    "node": "22.x"
   }
 }
