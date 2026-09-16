@@ -35,21 +35,33 @@ export default function LoginScreen() {
     setBusy(false);
   };
   return (
-    <Screen back={false}>
-      <View style={{ alignItems: "center", paddingVertical: 12 }}>
-        <Brand variant="hero" />
-      </View>
-      <View style={{ borderRadius: 24, overflow: "hidden" }}>
-        <Landscape height={185} />
+    <Screen showHeader={false}>
+      <View
+        style={{
+          borderRadius: 24,
+          overflow: "hidden",
+          backgroundColor: colors.primaryDark,
+        }}
+      >
+        <View
+          style={{
+            alignItems: "center",
+            paddingHorizontal: 12,
+            paddingVertical: 16,
+          }}
+        >
+          <Brand variant="hero" />
+        </View>
+        <Landscape height={110} />
       </View>
       <View style={{ gap: 12 }}>
         <Text
           accessibilityRole="header"
           style={{
-            fontSize: 34,
-            lineHeight: 40,
+            fontSize: 28,
+            lineHeight: 35,
             fontWeight: "700",
-            letterSpacing: -1.2,
+            letterSpacing: -0.8,
             color: colors.primary,
           }}
         >

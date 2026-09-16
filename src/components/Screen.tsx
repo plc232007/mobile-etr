@@ -13,11 +13,13 @@ export function Screen({
   children,
   home = false,
   back = true,
+  showHeader = true,
 }: React.PropsWithChildren<{
   title?: string;
   subtitle?: string;
   home?: boolean;
   back?: boolean;
+  showHeader?: boolean;
 }>) {
   const { data } = useCitizen();
   const network = useNetworkState();
@@ -25,48 +27,50 @@ export function Screen({
   return (
     <SafeAreaView edges={["top", "left", "right"]} style={styles.safe}>
       <View style={styles.shell}>
-        <View style={styles.header}>
-          {home ? (
-            <>
-              <Brand />
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel={`Alertas, ${unread} não lidos`}
-                onPress={() => go("/alertas")}
-                style={styles.headerButton}
-              >
-                <Icon name="bell" />
-                {unread > 0 && <View style={styles.dot} />}
-              </Pressable>
-            </>
-          ) : (
-            <>
-              <Row style={{ flex: 1 }}>
-                {back && (
-                  <Pressable
-                    accessibilityRole="button"
-                    accessibilityLabel="Voltar"
-                    onPress={() =>
-                      router.canGoBack() ? router.back() : router.replace("/")
-                    }
-                    style={styles.headerButton}
-                  >
-                    <Icon name="arrow-left" />
-                  </Pressable>
-                )}
-                <Brand variant="compact" />
-              </Row>
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel="Ajuda"
-                onPress={() => go("/atendimento")}
-                style={styles.headerButton}
-              >
-                <Icon name="help-circle" size={21} />
-              </Pressable>
-            </>
-          )}
-        </View>
+        {showHeader && (
+          <View style={styles.header}>
+            {home ? (
+              <>
+                <Brand />
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={`Alertas, ${unread} não lidos`}
+                  onPress={() => go("/alertas")}
+                  style={styles.headerButton}
+                >
+                  <Icon name="bell" />
+                  {unread > 0 && <View style={styles.dot} />}
+                </Pressable>
+              </>
+            ) : (
+              <>
+                <Row style={{ flex: 1 }}>
+                  {back && (
+                    <Pressable
+                      accessibilityRole="button"
+                      accessibilityLabel="Voltar"
+                      onPress={() =>
+                        router.canGoBack() ? router.back() : router.replace("/")
+                      }
+                      style={styles.headerButton}
+                    >
+                      <Icon name="arrow-left" />
+                    </Pressable>
+                  )}
+                  <Brand variant="compact" />
+                </Row>
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel="Ajuda"
+                  onPress={() => go("/atendimento")}
+                  style={styles.headerButton}
+                >
+                  <Icon name="help-circle" size={21} />
+                </Pressable>
+              </>
+            )}
+          </View>
+        )}
         <ScrollView
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={styles.content}
