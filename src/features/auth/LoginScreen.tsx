@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Text, View } from "react-native";
 import { Redirect } from "expo-router";
-import { Brand, Screen } from "@/components/Screen";
+import { Screen } from "@/components/Screen";
+import { Brand } from "@/components/Brand";
 import { Landscape } from "@/components/Landscape";
 import {
   Button,
@@ -36,7 +37,7 @@ export default function LoginScreen() {
   return (
     <Screen back={false}>
       <View style={{ alignItems: "center", paddingVertical: 12 }}>
-        <Brand />
+        <Brand variant="hero" />
       </View>
       <View style={{ borderRadius: 24, overflow: "hidden" }}>
         <Landscape height={185} />

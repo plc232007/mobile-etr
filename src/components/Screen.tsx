@@ -1,48 +1,12 @@
 import React from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { useNetworkState } from "expo-network";
 import { colors } from "@/theme";
 import { useCitizen } from "@/hooks/useCitizen";
-import { Copy, Eyebrow, go, Icon, Row, Title } from "./ui";
-export function Brand({ compact = false }: { compact?: boolean }) {
-  return (
-    <Row style={{ gap: 10 }}>
-      <View style={styles.brandMark}>
-        <Icon name="sunrise" color={colors.lime} size={27} />
-      </View>
-      <View>
-        <Text
-          style={{
-            color: colors.primary,
-            fontWeight: "800",
-            fontSize: 27,
-            letterSpacing: -1,
-          }}
-        >
-          ETR
-          <Text
-            style={{
-              color: colors.muted,
-              fontWeight: "400",
-              fontSize: 12,
-              letterSpacing: 0,
-            }}
-          >
-            {" "}
-            {compact ? "" : "• MINHA TERRA"}
-          </Text>
-        </Text>
-        {!compact && (
-          <Text style={{ color: colors.muted, fontSize: 10 }}>
-            Perto de você. Junto da sua terra.
-          </Text>
-        )}
-      </View>
-    </Row>
-  );
-}
+import { Copy, go, Icon, Row, Title } from "./ui";
+import { Brand } from "./Brand";
 export function Screen({
   title,
   subtitle,
@@ -90,7 +54,7 @@ export function Screen({
                     <Icon name="arrow-left" />
                   </Pressable>
                 )}
-                <Eyebrow>ETR • MINHA TERRA</Eyebrow>
+                <Brand variant="compact" />
               </Row>
               <Pressable
                 accessibilityRole="button"
@@ -148,14 +112,6 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.border,
   },
   content: { padding: 24, paddingBottom: 32, gap: 18 },
-  brandMark: {
-    width: 42,
-    height: 44,
-    borderRadius: 13,
-    backgroundColor: colors.primary,
-    alignItems: "center",
-    justifyContent: "center",
-  },
   headerButton: {
     width: 48,
     height: 48,
