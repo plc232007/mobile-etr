@@ -2,6 +2,7 @@ import { Tabs } from "expo-router";
 import { Icon, IconName } from "@/components/ui";
 import { colors } from "@/theme";
 import { useData } from "@/hooks/useCitizen";
+import { usePrototype } from "@/hooks/usePrototype";
 const tabs: { name: string; title: string; icon: IconName }[] = [
   { name: "index", title: "Início", icon: "home" },
   { name: "processos", title: "Processos", icon: "layers" },
@@ -11,6 +12,8 @@ const tabs: { name: string; title: string; icon: IconName }[] = [
 ];
 export default function TabLayout() {
   const data = useData();
+  const { model } = usePrototype();
+  const journey = model === "caminho";
   const unread = data.alerts.filter((item) => !item.read).length;
   return (
     <Tabs
@@ -19,9 +22,9 @@ export default function TabLayout() {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.muted,
         tabBarStyle: {
-          backgroundColor: colors.surface,
+          backgroundColor: journey ? "#F5F1E8" : colors.surface,
           width: "100%",
-          maxWidth: 640,
+          maxWidth: journey ? 1100 : 640,
           alignSelf: "center",
           borderTopColor: colors.border,
           minHeight: 78,

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocalSearchParams } from "expo-router";
 import { Screen } from "@/components/Screen";
 import {
   Button,
@@ -17,9 +18,16 @@ import { Attachment } from "@/types";
 import { date } from "@/utils/format";
 export default function PendingScreen() {
   const data = useData();
+  const { propertyId } = useLocalSearchParams<{ propertyId?: string }>();
+  const related = data.pending.filter(
+    (item) => !propertyId || item.propertyId === propertyId,
+  );
+  const process = data.processes.find(
+    (item) => !propertyId || item.propertyId === propertyId,
+  );
   const { update, notify } = useCitizen();
   const [selected, setSelected] = useState<Record<string, Attachment>>({});
-  const items = data.pending.filter((item) => !item.resolved);
+  const items = related.filter((item) => !item.resolved);
   return (
     <Screen
       title="Pendências"
@@ -65,10 +73,12 @@ export default function PendingScreen() {
         <>
           <EmptyState
             description="Você não possui nenhuma pendência de envio no momento. Os documentos recebidos serão conferidos pela equipe."
-            action="Ver processo atualizado"
-            onPress={() => go("/processo/regularizacao")}
+            action={process ? "Ver processo atualizado" : "Ver processos"}
+            onPress={() =>
+              go(process ? `/processo/${process.id}` : "/processos")
+            }
           />
-          {data.pending
+          {related
             .filter((item) => item.resolved)
             .map((item) => (
               <Card key={item.id}>

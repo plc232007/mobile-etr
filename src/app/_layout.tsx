@@ -6,6 +6,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { CitizenProvider, useCitizen } from "@/hooks/useCitizen";
 import { Copy, ErrorState, LoadingState } from "@/components/ui";
 import { colors } from "@/theme";
+import { PrototypeProvider } from "@/hooks/usePrototype";
 function Root() {
   const { loading, error, feedback, reload, reset } = useCitizen();
   if (loading) return <LoadingState />;
@@ -50,7 +51,9 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <CitizenProvider>
-        <Root />
+        <PrototypeProvider>
+          <Root />
+        </PrototypeProvider>
       </CitizenProvider>
     </SafeAreaProvider>
   );

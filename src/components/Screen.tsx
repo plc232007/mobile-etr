@@ -1,12 +1,13 @@
 import React from "react";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { router } from "expo-router";
+import { router, usePathname } from "expo-router";
 import { useNetworkState } from "expo-network";
 import { colors } from "@/theme";
 import { useCitizen } from "@/hooks/useCitizen";
 import { Copy, go, Icon, Row, Title } from "./ui";
 import { Brand } from "./Brand";
+import { prototypeLabels, usePrototype } from "@/hooks/usePrototype";
 export function Screen({
   title,
   subtitle,
@@ -22,11 +23,44 @@ export function Screen({
   showHeader?: boolean;
 }>) {
   const { data } = useCitizen();
+  const { model } = usePrototype();
+  const pathname = usePathname();
+  const journey = model === "caminho" && pathname !== "/prototipos";
   const network = useNetworkState();
   const unread = data?.alerts.filter((item) => !item.read).length ?? 0;
   return (
-    <SafeAreaView edges={["top", "left", "right"]} style={styles.safe}>
-      <View style={styles.shell}>
+    <SafeAreaView
+      edges={["top", "left", "right"]}
+      style={[styles.safe, journey && { backgroundColor: "#F5F1E8" }]}
+    >
+      <View style={[styles.shell, journey && { maxWidth: 1100 }]}>
+        {pathname !== "/prototipos" && (
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Trocar protótipo"
+            onPress={() => go("/prototipos")}
+            style={{
+              minHeight: 44,
+              paddingHorizontal: 24,
+              paddingVertical: 8,
+              backgroundColor: journey ? "#E8E1D3" : colors.primarySoft,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 8,
+            }}
+          >
+            <Copy small style={{ flexShrink: 1 }}>
+              Modelo {prototypeLabels[model]}
+            </Copy>
+            <Row style={{ gap: 5 }}>
+              <Copy small style={{ fontWeight: "700" }}>
+                Trocar
+              </Copy>
+              <Icon name="repeat" size={14} />
+            </Row>
+          </Pressable>
+        )}
         {showHeader && (
           <View style={styles.header}>
             {home ? (

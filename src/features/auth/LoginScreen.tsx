@@ -15,13 +15,18 @@ import {
 } from "@/components/ui";
 import { useCitizen } from "@/hooks/useCitizen";
 import { colors } from "@/theme";
+import { usePrototype } from "@/hooks/usePrototype";
+import PathLoginScreen from "@/features/path/PathLoginScreen";
 export default function LoginScreen() {
   const { authenticated, login } = useCitizen();
+  const { model } = usePrototype();
+  const client = model === "cliente";
   const [identifier, setIdentifier] = useState("");
   const [mode, setMode] = useState<"login" | "first" | "recover">("login");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   if (authenticated) return <Redirect href="/" />;
+  if (model === "caminho") return <PathLoginScreen />;
   const enter = async () => {
     const digits = identifier.replace(/\D/g, "");
     if (digits.length !== 11 && digits.length !== 14) {
@@ -52,7 +57,28 @@ export default function LoginScreen() {
         >
           <Brand variant="hero" />
         </View>
-        <Landscape height={110} />
+        {client ? (
+          <View style={{ padding: 24, gap: 10 }}>
+            <Copy small style={{ color: colors.lime, letterSpacing: 2 }}>
+              ÁREA DO CLIENTE
+            </Copy>
+            <Text
+              style={{
+                color: "white",
+                fontSize: 30,
+                lineHeight: 38,
+                fontWeight: "700",
+              }}
+            >
+              Mais perto da sua terra.{"\n"}Mais perto de você.
+            </Text>
+            <Copy style={{ color: "#DFEBDD" }}>
+              Serviços e acompanhamento da regularização rural em um só lugar.
+            </Copy>
+          </View>
+        ) : (
+          <Landscape height={110} />
+        )}
       </View>
       <View style={{ gap: 12 }}>
         <Text
@@ -65,7 +91,9 @@ export default function LoginScreen() {
             color: colors.primary,
           }}
         >
-          Sua terra. Seu futuro.{"\n"}A gente cuida junto.
+          {client
+            ? "O próximo passo está aqui."
+            : "Sua terra. Seu futuro.\nA gente cuida junto."}
         </Text>
         <Copy muted>
           Acompanhe sua regularização e resolva o que precisa, de onde você

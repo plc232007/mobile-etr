@@ -1,6 +1,10 @@
 import { Screen } from "@/components/Screen";
 import { Card, Copy, MenuItem, SectionHeader, Title } from "@/components/ui";
+import { usePrototype } from "@/hooks/usePrototype";
+import PathServicesScreen from "@/features/path/PathServicesScreen";
 export default function ServicesScreen() {
+  const { model } = usePrototype();
+  if (model === "caminho") return <PathServicesScreen />;
   return (
     <Screen
       title="Como podemos ajudar?"
