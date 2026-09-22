@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Switch, View } from "react-native";
+import { View } from "react-native";
 import { router } from "expo-router";
 import { Screen } from "@/components/Screen";
 import { Brand } from "@/components/Brand";
@@ -19,7 +19,7 @@ import { useCitizen } from "@/hooks/useCitizen";
 import { colors } from "@/theme";
 
 export default function PrototypesScreen() {
-  const { model, select, geoEnabled, setGeoEnabled } = usePrototype();
+  const { model, select } = usePrototype();
   const { authenticated } = useCitizen();
   const [busy, setBusy] = useState<Prototype | null>(null);
   const [error, setError] = useState("");
@@ -44,26 +44,6 @@ export default function PrototypesScreen() {
         Escolha uma experiência para navegar. Você pode trocar de modelo a
         qualquer momento, sem perder seus dados de demonstração.
       </Copy>
-      <Card>
-        <Title>ETR GEO opcional</Title>
-        <Copy muted small>
-          Valide os três modelos com ou sem o módulo de mapas. Os demais
-          serviços continuam disponíveis.
-        </Copy>
-        <Row style={{ justifyContent: "space-between" }}>
-          <Copy>Habilitar ETR GEO</Copy>
-          <Switch
-            accessibilityLabel="Habilitar ETR GEO"
-            value={geoEnabled}
-            onValueChange={(enabled) => {
-              void setGeoEnabled(enabled).catch(() =>
-                setError("Não foi possível salvar a opção do ETR GEO."),
-              );
-            }}
-            trackColor={{ true: colors.primary }}
-          />
-        </Row>
-      </Card>
       {(
         [
           {

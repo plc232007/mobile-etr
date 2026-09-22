@@ -4,20 +4,20 @@ Referência: `prototipos_etr.md`. A evolução altera a experiência, preservand
 
 ## Inventário e decisões
 
-| Área existente                | Reaproveitamento e evolução                                                                                                                                        |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Login, perfil e configurações | Sessão local e dados de contato preservados; apresentações coerentes com cada proposta.                                                                            |
-| Processos e jornada           | Protocolos, status, movimentações e sete etapas existentes; resumo passa a mostrar última atualização e pendências nos modelos 2 e 3.                              |
-| Requerimento                  | Cinco etapas reais do protótipo, rascunho persistente, upload e documentos salvos; campos obrigatórios explicados e erros próximos ao avanço.                      |
-| Pendências e carteira         | Envio, substituição, visualização, download e reutilização mantidos. Envio não representa aprovação.                                                               |
-| Boletos                       | Referência, status, vencimento, valor e geração de PDF existentes; sem pagamento real ou indicadores novos.                                                        |
-| Certidão                      | Consulta simulada e histórico existentes; a home pessoal deriva a disponibilidade dos documentos, sem inventar impedimentos ou resultado fiscal.                   |
-| Editais                       | Busca e filtros existentes; ordenação por prazo. Não há data de publicação no modelo de dados, portanto ela não foi criada.                                        |
-| Notícias                      | Conteúdo existente, ordenado por data, com resumo derivado do texto; abaixo dos serviços ou informações pessoais.                                                  |
-| ETR Monitora                  | Entrada própria com seleção de imóvel; ocorrência e situação existentes. Funciona sem GEO.                                                                         |
-| ETR GEO                       | Módulo opcional controlado pela galeria; esconder acessos também nos detalhes de imóvel e monitoramento. Links diretos exibem indisponibilidade quando desativado. |
-| Atendimento e agendamento     | Fluxos, mensagens e agendamentos locais mantidos.                                                                                                                  |
-| Alertas                       | Feed pessoal derivado dos alertas locais. Não foi implementado push nem integração externa.                                                                        |
+| Área existente                | Reaproveitamento e evolução                                                                                                                      |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Login, perfil e configurações | Sessão local e dados de contato preservados; apresentações coerentes com cada proposta.                                                          |
+| Processos e jornada           | Protocolos, status, movimentações e sete etapas existentes; resumo passa a mostrar última atualização e pendências nos modelos 2 e 3.            |
+| Requerimento                  | Cinco etapas reais do protótipo, rascunho persistente, upload e documentos salvos; campos obrigatórios explicados e erros próximos ao avanço.    |
+| Pendências e carteira         | Envio, substituição, visualização, download e reutilização mantidos. Envio não representa aprovação.                                             |
+| Boletos                       | Referência, status, vencimento, valor e geração de PDF existentes; sem pagamento real ou indicadores novos.                                      |
+| Certidão                      | Consulta simulada e histórico existentes; a home pessoal deriva a disponibilidade dos documentos, sem inventar impedimentos ou resultado fiscal. |
+| Editais                       | Busca e filtros existentes; ordenação por prazo. Não há data de publicação no modelo de dados, portanto ela não foi criada.                      |
+| Notícias                      | Conteúdo existente, ordenado por data, com resumo derivado do texto; abaixo dos serviços ou informações pessoais.                                |
+| ETR Monitora                  | Entrada própria com seleção de imóvel; ocorrência e situação existentes. Funciona sem GEO.                                                       |
+| ETR GEO                       | Módulo secundário dentro dos serviços; não ocupa o centro da arquitetura e não é necessário para o funcionamento do ETR Monitora.                |
+| Atendimento e agendamento     | Fluxos, mensagens e agendamentos locais mantidos.                                                                                                |
+| Alertas                       | Feed pessoal derivado dos alertas locais. Não foi implementado push nem integração externa.                                                      |
 
 ## Comparação para validação
 
@@ -37,7 +37,7 @@ As alterações não adicionam bibliotecas, imagens remotas ou chamadas a APIs. 
 
 1. Central de Serviços → busca por “certidao” → Certidão Negativa; início → boleto; início → requerimento com validação e rascunho.
 2. Minha ETR → documento pendente → envio → retorno ao início e processo atualizado; consulta de certidão → retorno → visualização da certidão disponível.
-3. Galeria → desabilitar GEO → serviços, imóvel e Monitora sem mapa; abrir link direto de mapa; reabilitar e consultar outro imóvel.
+3. Serviços → ETR GEO → selecionar imóvel; ETR Monitora continua acessível como serviço independente.
 4. Alternar modelos e recarregar, preservando sessão, escolha e dados. Conferir 320, 390, 1000 e 1440 px e estados sem dados.
 
 Os testes E2E em `tests/e2e` cobrem esses percursos e os fluxos originais.

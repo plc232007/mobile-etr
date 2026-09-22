@@ -22,6 +22,8 @@ export default function LoginScreen() {
   const { model } = usePrototype();
   const client = model === "cliente";
   const [identifier, setIdentifier] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [mode, setMode] = useState<"login" | "first" | "recover">("login");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -33,6 +35,10 @@ export default function LoginScreen() {
       setError(
         "Informe 11 dígitos para CPF ou 14 para CNPJ. Use 000.000.000-00 para testar.",
       );
+      return;
+    }
+    if (password.length < 8) {
+      setError("A senha deve ter pelo menos 8 caracteres.");
       return;
     }
     setBusy(true);
@@ -110,8 +116,8 @@ export default function LoginScreen() {
         </Text>
         <Copy muted small>
           {mode === "login"
-            ? "Um espaço para você e para o seu imóvel."
-            : "Neste protótipo, você acessa a conta fictícia de João da Silva, sem senha."}
+            ? "Um espaço protegido para você e para o seu imóvel."
+            : "Neste protótipo, a senha é usada somente para validar o formulário e nunca é salva."}
         </Copy>
         <Field
           label="CPF ou CNPJ"
@@ -124,6 +130,25 @@ export default function LoginScreen() {
           keyboardType="number-pad"
           maxLength={18}
           autoComplete="off"
+        />
+        <Field
+          label="Senha"
+          placeholder="Digite sua senha"
+          value={password}
+          onChangeText={(value) => {
+            setPassword(value);
+            setError("");
+          }}
+          secureTextEntry={!showPassword}
+          autoComplete="password"
+          autoCapitalize="none"
+          textContentType="password"
+        />
+        <Button
+          title={showPassword ? "Ocultar senha" : "Mostrar senha"}
+          variant="ghost"
+          icon={showPassword ? "eye-off" : "eye"}
+          onPress={() => setShowPassword((current) => !current)}
         />
         {!!error && (
           <Copy small style={{ color: colors.danger }}>
@@ -165,7 +190,7 @@ export default function LoginScreen() {
       </Card>
       <InfoCard
         title="Você está em uma demonstração"
-        description="Use os dados de exemplo. Não informe dados pessoais reais. Nenhum acesso a sistemas do governo é realizado."
+        description="Use os dados de exemplo. A senha nunca é salva neste protótipo. Não informe dados pessoais reais; nenhum acesso a sistemas do governo é realizado."
         icon="shield"
       />
       <Row style={{ justifyContent: "center" }}>

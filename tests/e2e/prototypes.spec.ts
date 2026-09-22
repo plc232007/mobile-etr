@@ -9,6 +9,17 @@ test("central de serviços: busca, navegação responsiva e troca persistida", a
   await page
     .getByRole("button", { name: "Explorar Central de Serviços" })
     .click();
+  await expect(page.getByLabel("Senha", { exact: true })).toHaveAttribute(
+    "type",
+    "password",
+  );
+  await page.getByLabel("CPF ou CNPJ", { exact: true }).fill("000.000.000-00");
+  await page.getByRole("button", { name: "Continuar", exact: true }).click();
+  await expect(
+    page.getByText("A senha deve ter pelo menos 8 caracteres.", {
+      exact: true,
+    }),
+  ).toBeVisible();
   await page
     .getByRole("button", { name: "Entrar na demonstração", exact: true })
     .click();
@@ -73,14 +84,10 @@ test("central de serviços: busca, navegação responsiva e troca persistida", a
   expect(errors).toEqual([]);
 });
 
-test("ETR GEO opcional não interfere no Monitora e persiste entre modelos", async ({
+test("ETR GEO aparece como serviço e não interfere no Monitora", async ({
   page,
 }) => {
   await page.goto("/prototipos");
-  await page.getByRole("switch", { name: "Habilitar ETR GEO" }).click();
-  await expect(
-    page.getByRole("switch", { name: "Habilitar ETR GEO" }),
-  ).not.toBeChecked();
   await page
     .getByRole("button", { name: "Explorar Central de Serviços" })
     .click();
@@ -93,7 +100,7 @@ test("ETR GEO opcional não interfere no Monitora e persiste entre modelos", asy
   ).toBeVisible();
   await expect(
     page.getByRole("button").filter({ hasText: "ETR GEO" }),
-  ).toHaveCount(0);
+  ).toBeVisible();
   await page.getByRole("button").filter({ hasText: "ETR Monitora" }).click();
   await page
     .getByRole("button")
@@ -104,21 +111,12 @@ test("ETR GEO opcional não interfere no Monitora e persiste entre modelos", asy
   ).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Visualizar no mapa" }),
-  ).toHaveCount(0);
+  ).toBeVisible();
   await page.goto("/mapa/sao-jose");
-  await expect(page.getByText("ETR GEO não habilitado")).toBeVisible();
-  await page.goto("/prototipos");
-  await page.getByRole("button", { name: "Explorar Minha ETR" }).click();
-  await page.goto("/imovel/sao-jose");
   await expect(
-    page.getByText("Mapa ilustrativo • Toque para explorar as informações"),
-  ).toHaveCount(0);
+    page.getByText("Localização ilustrativa", { exact: true }),
+  ).toBeVisible();
   await page.goto("/prototipos");
-  await page.reload();
-  await expect(
-    page.getByRole("switch", { name: "Habilitar ETR GEO" }),
-  ).not.toBeChecked();
-  await page.getByRole("switch", { name: "Habilitar ETR GEO" }).click();
   await page.getByRole("button", { name: "Explorar Minha ETR" }).click();
   await page.goto("/servicos");
   await page.getByRole("button").filter({ hasText: "ETR GEO" }).click();

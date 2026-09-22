@@ -23,7 +23,7 @@ Acesse **`/prototipos`** ou use **Trocar** na faixa superior de qualquer tela:
 
 As propostas seguem [prototipos_etr.md](prototipos_etr.md). Os três modelos compartilham sessão, dados e fluxos; trocar de modelo não apaga envios ou rascunhos. A escolha fica salva no aparelho, preservando as seleções das versões anteriores. O primeiro acesso mantém o modelo original.
 
-Na galeria pública, **Habilitar ETR GEO** permite comparar a experiência com e sem mapas. Quando desativado, os acessos desaparecem, as rotas de mapa explicam a indisponibilidade e o Monitora continua funcionando. A escolha é persistida separadamente dos dados pessoais.
+O ETR GEO permanece disponível como serviço secundário dentro do catálogo. Ele não é o centro da arquitetura; os demais serviços e o ETR Monitora funcionam de forma independente.
 
 Nos modelos 2 e 3, o desktop usa navegação superior compacta a partir de 1000 px. No celular, o modelo 2 tem Início / Serviços / Solicitações / Notícias / Perfil; o modelo 3 tem Início / Solicitações / Serviços / Notificações / Perfil. Os alertas locais continuam acessíveis pelo sino. Detalhes sobre as decisões e os dados disponíveis em [docs/prototipos-etr.md](docs/prototipos-etr.md).
 

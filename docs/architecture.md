@@ -14,7 +14,7 @@
 
 ## Rotas
 
-`/prototipos` compara Tradicional, Central de Serviços e Minha ETR. `PrototypeProvider` mantém os identificadores internos `original`, `cliente` e `caminho`, persistidos em `etr:prototype`, para preservar escolhas anteriores. `etr:geo-enabled` controla somente a disponibilidade dos mapas, sem alterar imóveis ou regras de negócio.
+`/prototipos` compara Tradicional, Central de Serviços e Minha ETR. `PrototypeProvider` mantém os identificadores internos `original`, `cliente` e `caminho`, persistidos em `etr:prototype`, para preservar escolhas anteriores. O GEO permanece disponível no catálogo como módulo secundário.
 
 O modelo 01 preserva a experiência original. O modelo 02 usa `ClientHomeScreen` como central de serviços. O modelo 03 usa `PathHomeScreen` como central pessoal. Os dois compartilham `ServiceCatalogScreen`, com catálogo em `src/features/services/catalog.ts`, busca sem acentos e filtros. As informações do painel pessoal derivam de pendências, processos, documentos, pagamentos e alertas existentes.
 

@@ -10,12 +10,18 @@ export default function PathLoginScreen() {
   const { login } = useCitizen();
   const wide = useWindowDimensions().width >= 850;
   const [identifier, setIdentifier] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [help, setHelp] = useState("");
   const enter = async (demo = false) => {
     if (!demo && ![11, 14].includes(identifier.replace(/\D/g, "").length)) {
-      setError("Use 000.000.000-00 para testar o acesso da demonstração.");
+      setError("Informe um CPF ou CNPJ válido para continuar.");
+      return;
+    }
+    if (!demo && password.length < 8) {
+      setError("A senha deve ter pelo menos 8 caracteres.");
       return;
     }
     setBusy(true);
@@ -95,6 +101,25 @@ export default function PathLoginScreen() {
             maxLength={18}
             autoComplete="off"
           />
+          <Field
+            label="Senha"
+            placeholder="Digite sua senha"
+            value={password}
+            onChangeText={(value) => {
+              setPassword(value);
+              setError("");
+            }}
+            secureTextEntry={!showPassword}
+            autoComplete="password"
+            autoCapitalize="none"
+            textContentType="password"
+          />
+          <Button
+            title={showPassword ? "Ocultar senha" : "Mostrar senha"}
+            variant="ghost"
+            icon={showPassword ? "eye-off" : "eye"}
+            onPress={() => setShowPassword((current) => !current)}
+          />
           {!!error && <Copy style={{ color: c.accent }}>{error}</Copy>}
           <Button
             title="Continuar"
@@ -118,7 +143,7 @@ export default function PathLoginScreen() {
           />
           {!!help && <Copy small>{help}</Copy>}
           <Copy small muted>
-            Demonstração com dados fictícios. Não informe dados pessoais reais.
+            A senha nunca é salva neste protótipo. Use apenas dados fictícios.
           </Copy>
         </View>
       </View>

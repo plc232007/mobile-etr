@@ -12,24 +12,19 @@ const Context = createContext<{
   model: Prototype;
   select: (model: Prototype) => Promise<void>;
   geoEnabled: boolean;
-  setGeoEnabled: (enabled: boolean) => Promise<void>;
 } | null>(null);
 const key = "etr:prototype";
 
 export function PrototypeProvider({ children }: React.PropsWithChildren) {
   const [model, setModel] = useState<Prototype>("original");
   const [ready, setReady] = useState(false);
-  const [geoEnabled, setGeo] = useState(true);
+  const geoEnabled = true;
   useEffect(() => {
-    Promise.all([
-      AsyncStorage.getItem(key),
-      AsyncStorage.getItem("etr:geo-enabled"),
-    ])
-      .then(([value, geo]) => {
+    AsyncStorage.getItem(key)
+      .then((value) => {
         setModel(
           value === "cliente" || value === "caminho" ? value : "original",
         );
-        setGeo(geo !== "false");
       })
       .catch(() => undefined)
       .finally(() => setReady(true));
@@ -38,12 +33,8 @@ export function PrototypeProvider({ children }: React.PropsWithChildren) {
     await AsyncStorage.setItem(key, next);
     setModel(next);
   };
-  const setGeoEnabled = async (enabled: boolean) => {
-    await AsyncStorage.setItem("etr:geo-enabled", String(enabled));
-    setGeo(enabled);
-  };
   return (
-    <Context.Provider value={{ model, select, geoEnabled, setGeoEnabled }}>
+    <Context.Provider value={{ model, select, geoEnabled }}>
       {ready ? children : <LoadingState />}
     </Context.Provider>
   );
