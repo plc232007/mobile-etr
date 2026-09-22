@@ -20,9 +20,8 @@ test("central de serviços: busca, navegação responsiva e troca persistida", a
       exact: true,
     }),
   ).toBeVisible();
-  await page
-    .getByRole("button", { name: "Entrar na demonstração", exact: true })
-    .click();
+  await page.getByLabel("Senha", { exact: true }).fill("ETR-demo-2026!");
+  await page.getByRole("button", { name: "Entrar", exact: true }).click();
   await expect(
     page.getByRole("heading", { name: "O que você precisa?" }),
   ).toBeVisible();
@@ -91,9 +90,9 @@ test("ETR GEO aparece como serviço e não interfere no Monitora", async ({
   await page
     .getByRole("button", { name: "Explorar Central de Serviços" })
     .click();
-  await page
-    .getByRole("button", { name: "Entrar na demonstração", exact: true })
-    .click();
+  await page.getByLabel("CPF ou CNPJ", { exact: true }).fill("000.000.000-00");
+  await page.getByLabel("Senha", { exact: true }).fill("ETR-demo-2026!");
+  await page.getByRole("button", { name: "Entrar", exact: true }).click();
   await page.goto("/servicos");
   await expect(
     page.getByRole("heading", { name: "Serviços ETR" }),

@@ -5,6 +5,7 @@ import { Brand } from "@/components/Brand";
 import { Button, Copy, Field, Icon, Row, Title } from "@/components/ui";
 import { useCitizen } from "@/hooks/useCitizen";
 import { pathColors as c, pathStyles as s } from "./pathStyles";
+import { validatePrototypePassword } from "@/services/prototypeAuth";
 
 export default function PathLoginScreen() {
   const { login } = useCitizen();
@@ -15,13 +16,14 @@ export default function PathLoginScreen() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [help, setHelp] = useState("");
-  const enter = async (demo = false) => {
-    if (!demo && ![11, 14].includes(identifier.replace(/\D/g, "").length)) {
+  const enter = async () => {
+    if (![11, 14].includes(identifier.replace(/\D/g, "").length)) {
       setError("Informe um CPF ou CNPJ válido para continuar.");
       return;
     }
-    if (!demo && password.length < 8) {
-      setError("A senha deve ter pelo menos 8 caracteres.");
+    const auth = validatePrototypePassword(password);
+    if (!auth.valid) {
+      setError(auth.message);
       return;
     }
     setBusy(true);
@@ -127,17 +129,17 @@ export default function PathLoginScreen() {
             onPress={() => void enter()}
           />
           <Button
-            title="Entrar na demonstração"
+            title="Entrar"
             variant="secondary"
             disabled={busy}
-            onPress={() => void enter(true)}
+            onPress={() => void enter()}
           />
           <Button
             title="Ajuda para acessar"
             variant="ghost"
             onPress={() =>
               setHelp(
-                "Neste protótipo, não é necessário criar uma conta ou recuperar senha. Use Entrar na demonstração para acessar os dados fictícios de João da Silva.",
+                "A senha é definida no ambiente de demonstração e nunca é salva no aparelho. Se você não a recebeu, peça ao responsável pelo protótipo.",
               )
             }
           />

@@ -11,9 +11,9 @@ test("Minha ETR: pendência resolvida, certidão, atividades e navegação", asy
   await expect(
     page.getByRole("heading", { name: "Entre no seu espaço" }),
   ).toBeVisible();
-  await page
-    .getByRole("button", { name: "Entrar na demonstração", exact: true })
-    .click();
+  await page.getByLabel("CPF ou CNPJ", { exact: true }).fill("000.000.000-00");
+  await page.getByLabel("Senha", { exact: true }).fill("ETR-demo-2026!");
+  await page.getByRole("button", { name: "Entrar", exact: true }).click();
   await expect(page.getByRole("tab", { name: /Solicitações/ })).toBeVisible();
   await expect(page.getByRole("tab", { name: /Notificações/ })).toBeVisible();
   await page
@@ -89,9 +89,9 @@ test("Minha ETR: pendência resolvida, certidão, atividades e navegação", asy
 test("Minha ETR: estados vazios e catálogo pesquisável", async ({ page }) => {
   await page.goto("/prototipos");
   await page.getByRole("button", { name: "Explorar Minha ETR" }).click();
-  await page
-    .getByRole("button", { name: "Entrar na demonstração", exact: true })
-    .click();
+  await page.getByLabel("CPF ou CNPJ", { exact: true }).fill("000.000.000-00");
+  await page.getByLabel("Senha", { exact: true }).fill("ETR-demo-2026!");
+  await page.getByRole("button", { name: "Entrar", exact: true }).click();
   await expect(
     page.getByRole("heading", { name: "Sua atenção agora" }),
   ).toBeVisible();

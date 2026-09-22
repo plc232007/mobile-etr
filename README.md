@@ -13,6 +13,10 @@ npm run web
 
 Abra a URL exibida pelo Expo e escolha **Entrar na demonstração**. Não é necessário informar dados pessoais. Para testar o campo de login, use `000.000.000-00`.
 
+### Senha da demonstração
+
+O acesso aos protótipos exige uma senha definida fora do código. Copie `.env.example` para `.env.local`, escolha uma senha com pelo menos 8 caracteres e reinicie o Expo. A variável `EXPO_PUBLIC_ETR_DEMO_PASSWORD` é usada apenas para este protótipo; como qualquer segredo entregue a um aplicativo cliente, ela não substitui autenticação de produção em servidor. A senha não é salva no aparelho.
+
 ## Modelos de protótipo
 
 Acesse **`/prototipos`** ou use **Trocar** na faixa superior de qualquer tela:

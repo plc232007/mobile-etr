@@ -17,6 +17,7 @@ import { useCitizen } from "@/hooks/useCitizen";
 import { colors } from "@/theme";
 import { usePrototype } from "@/hooks/usePrototype";
 import PathLoginScreen from "@/features/path/PathLoginScreen";
+import { validatePrototypePassword } from "@/services/prototypeAuth";
 export default function LoginScreen() {
   const { authenticated, login } = useCitizen();
   const { model } = usePrototype();
@@ -37,8 +38,9 @@ export default function LoginScreen() {
       );
       return;
     }
-    if (password.length < 8) {
-      setError("A senha deve ter pelo menos 8 caracteres.");
+    const auth = validatePrototypePassword(password);
+    if (!auth.valid) {
+      setError(auth.message);
       return;
     }
     setBusy(true);
@@ -117,7 +119,7 @@ export default function LoginScreen() {
         <Copy muted small>
           {mode === "login"
             ? "Um espaço protegido para você e para o seu imóvel."
-            : "Neste protótipo, a senha é usada somente para validar o formulário e nunca é salva."}
+            : "A senha é definida no ambiente e nunca é salva no aparelho."}
         </Copy>
         <Field
           label="CPF ou CNPJ"
@@ -162,9 +164,10 @@ export default function LoginScreen() {
           onPress={() => void enter()}
         />
         <Button
-          title="Entrar na demonstração"
+          title="Entrar"
           variant="secondary"
-          onPress={() => void login()}
+          disabled={busy}
+          onPress={() => void enter()}
         />
         <Row
           style={{ justifyContent: "space-between", flexWrap: "wrap", gap: 0 }}
@@ -190,7 +193,7 @@ export default function LoginScreen() {
       </Card>
       <InfoCard
         title="Você está em uma demonstração"
-        description="Use os dados de exemplo. A senha nunca é salva neste protótipo. Não informe dados pessoais reais; nenhum acesso a sistemas do governo é realizado."
+        description="Use os dados de exemplo. A senha vem da configuração privada do ambiente e nunca é salva no aparelho. Nenhum acesso a sistemas do governo é realizado."
         icon="shield"
       />
       <Row style={{ justifyContent: "center" }}>

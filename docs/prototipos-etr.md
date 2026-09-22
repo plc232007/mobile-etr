@@ -42,4 +42,8 @@ As alterações não adicionam bibliotecas, imagens remotas ou chamadas a APIs. 
 
 Os testes E2E em `tests/e2e` cobrem esses percursos e os fluxos originais.
 
+## Proteção de acesso à demonstração
+
+O login pede CPF/CNPJ e uma senha definida por `EXPO_PUBLIC_ETR_DEMO_PASSWORD` em `.env.local`. O valor não fica no código versionado, não é salvo no aparelho e a sessão não guarda a senha. `.env.example` documenta a configuração sem incluir o valor real. Essa proteção atende ao objetivo de restringir o protótipo durante a validação; como a senha precisa chegar ao aplicativo cliente, ela não deve ser tratada como autenticação de produção. Para produção, a validação precisa ocorrer em servidor, com credenciais reais, expiração de sessão e armazenamento seguro.
+
 Validação desta entrega: TypeScript, ESLint e build web aprovados; os 11 cenários de navegador passaram (10 na execução geral e o cenário de GEO confirmado na repetição direcionada, após corrigir um seletor ambíguo do teste). Layouts inspecionados em capturas mobile e desktop. A validação automatizada é web; não substitui testes em aparelhos Android/iOS.

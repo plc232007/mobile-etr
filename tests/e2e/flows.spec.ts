@@ -1,9 +1,9 @@
 import { test, expect, Page } from "@playwright/test";
 async function login(page: Page) {
   await page.goto("/");
-  await page
-    .getByRole("button", { name: "Entrar na demonstração", exact: true })
-    .click();
+  await page.getByLabel("CPF ou CNPJ", { exact: true }).fill("000.000.000-00");
+  await page.getByLabel("Senha", { exact: true }).fill("ETR-demo-2026!");
+  await page.getByRole("button", { name: "Entrar", exact: true }).click();
   await expect(page.getByText("Vamos cuidar da sua terra?")).toBeVisible();
 }
 test("login, imóvel, timeline, envio do CAR e processo atualizado", async ({
@@ -236,7 +236,7 @@ test("rotas secundárias, responsividade, preferências e saída", async ({
     .getByRole("button", { name: "Confirmar saída", exact: true })
     .click();
   await expect(
-    page.getByRole("button", { name: "Entrar na demonstração", exact: true }),
+    page.getByRole("button", { name: "Entrar", exact: true }),
   ).toBeVisible();
   expect(errors).toEqual([]);
 });
