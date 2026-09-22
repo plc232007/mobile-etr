@@ -13,6 +13,18 @@ npm run web
 
 Abra a URL exibida pelo Expo e escolha **Entrar na demonstração**. Não é necessário informar dados pessoais. Para testar o campo de login, use `000.000.000-00`.
 
+## Modelos de protótipo
+
+Acesse **`/prototipos`** ou use **Trocar** na faixa superior de qualquer tela:
+
+- **01 · Minha terra:** proposta original, com resumo pessoal e acessos rápidos.
+- **02 · Área do Cliente:** nova proposta com seleção de imóvel, andamento, próximo passo, pendências e boleto daquele imóvel; serviços online, ETR GEO, ETR Monitora e orientação ao cidadão.
+- **03 · Meu caminho:** alternativa com layout editorial em tons de areia e terracota, login próprio, início organizado em Para resolver / Em andamento / Meus imóveis e catálogo de serviços com busca e filtros por necessidade. No desktop, início e login usam duas colunas; no celular, o conteúdo é empilhado.
+
+A escolha fica salva no aparelho. Os três modelos compartilham sessão, dados fictícios e fluxos; trocar de modelo não apaga envios ou requerimentos. O primeiro acesso mantém o modelo original. A galeria pode ser acessada sem login. No modelo 03, valide com o cliente a facilidade de encontrar uma tarefa, distinguir pedidos enviados de ações pendentes e buscar um serviço sem conhecer seu nome oficial. As telas de detalhe e as regras dos serviços são compartilhadas.
+
+A proposta 02 segue o briefing de `codex.md` e usa como referência a [Área do Cliente da ETR](https://www.etr.df.gov.br/area-do-cliente/), cujo conteúdo público indexado apresenta CPF/CNPJ, primeiro acesso, recuperação e canais de atendimento. A consulta direta ao site retornou HTTP 403 em 22/09/2026; telas autenticadas e regras internas não foram verificadas. O painel por imóvel é uma proposta de UX, e os serviços continuam simulados.
+
 ```bash
 npm start       # QR code / servidor Expo
 npm run android # emulador Android ou dispositivo configurado

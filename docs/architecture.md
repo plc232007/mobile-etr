@@ -14,6 +14,12 @@
 
 ## Rotas
 
+`/prototipos` é uma galeria pública dos modelos 01 (Minha terra), 02 (Área do Cliente) e 03 (Meu caminho). `PrototypeProvider` persiste somente a escolha visual em `etr:prototype`, separada da sessão e dos dados de domínio. Login e início adaptam a apresentação; o modelo 03 também tem um catálogo próprio de serviços. Os fluxos de detalhe são compartilhados. A faixa de troca fica disponível no componente `Screen`.
+
+O modelo 03 concentra suas telas e estilos em `src/features/path`: início por tarefas / processos / imóveis, login e serviços pesquisáveis por intenção. O shell usa até 1100 px e fundo areia, com duas colunas no início e login a partir de 850 px. Os cinco destinos da navegação principal são preservados. Busca ignora acentos e combina com filtros; listas e contagens derivam do estado de domínio, incluindo estados vazios.
+
+No modelo 02, o imóvel selecionado determina processo, pendências, parcela, mapa e monitoramento. `/pendencias?propertyId=...` restringe os envios ao imóvel correspondente; sem esse parâmetro, mantém a central geral. A seleção de imóvel vale enquanto a tela inicial estiver montada.
+
 `/login`, `/`, `/processos`, `/servicos`, `/alertas`, `/perfil`.
 Detalhes: `/processo/[id]`, `/pendencias`, `/requerimento`, `/boletos`, `/boleto/[id]`, `/editais`, `/edital/[id]`, `/imoveis`, `/imovel/[id]`, `/documentos`, `/documento/[id]`, `/certidao`, `/mapa/[id]`, `/monitoramento/[id]`, `/jornada`, `/atendimento`, `/agendamento`, `/noticias`, `/noticia/[id]`, `/configuracoes`.
 
