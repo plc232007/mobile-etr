@@ -1,60 +1,133 @@
 import { test, expect } from "@playwright/test";
 
-test("modelos acessíveis, escolha persistida e contexto do imóvel", async ({
+test("central de serviços: busca, navegação responsiva e troca persistida", async ({
   page,
 }) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/prototipos");
-  await page.getByRole("button", { name: "Explorar Área do Cliente" }).click();
-  await expect(page.getByText("O próximo passo está aqui.")).toBeVisible();
+  await page
+    .getByRole("button", { name: "Explorar Central de Serviços" })
+    .click();
   await page
     .getByRole("button", { name: "Entrar na demonstração", exact: true })
     .click();
   await expect(
-    page.getByRole("button", { name: "Selecionar imóvel" }),
-  ).toContainText("Chácara Boa Esperança");
-  await page.getByRole("button", { name: "Enviar documento pendente" }).click();
-  await expect(page).toHaveURL(/propertyId=boa-esperanca/);
-  await expect(
-    page.getByRole("heading", { name: "Cadastro Ambiental Rural — CAR" }),
+    page.getByRole("heading", { name: "O que você precisa?" }),
   ).toBeVisible();
-  await page.goto("/");
-  await page.getByRole("button", { name: "Selecionar imóvel" }).click();
+  await expect(page.getByRole("tab", { name: /Notícias/ })).toBeVisible();
+  await expect(
+    page.getByRole("tab", { name: /Alertas|Notificações/ }),
+  ).toHaveCount(0);
+  await page.getByLabel("Buscar serviço...").fill("certidao");
+  await expect(
+    page.getByText("1 serviço encontrado", { exact: true }),
+  ).toBeVisible();
   await page
     .getByRole("button")
-    .filter({ hasText: "Fazenda São José" })
+    .filter({ hasText: "Certidão Negativa" })
     .click();
-  await page.getByRole("button").filter({ hasText: "ETR GEO" }).click();
-  await expect(page).toHaveURL(/mapa\/sao-jose/);
-  await page.reload();
-  await expect(
-    page.getByRole("button", { name: "Trocar protótipo" }),
-  ).toContainText("Área do Cliente");
+  await expect(page).toHaveURL(/certidao/);
   await page.goto("/");
-  for (const width of [320, 390, 1440]) {
-    await page.setViewportSize({ width, height: 900 });
+  await page
+    .getByRole("button", { name: "Emitir boleto", exact: true })
+    .click();
+  await expect(page).toHaveURL(/boletos/);
+  await page.goto("/");
+  await page.getByRole("button", { name: "Iniciar requerimento" }).click();
+  await page.getByRole("button", { name: "Continuar", exact: true }).click();
+  await expect(
+    page.getByText("Selecione o tipo de requerimento para continuar."),
+  ).toBeVisible();
+  await page.goto("/");
+  for (const width of [320, 390, 1000, 1440]) {
+    await page.setViewportSize({ width, height: 950 });
     await expect(
-      page.getByRole("button", { name: "Selecionar imóvel" }),
+      page.getByRole("heading", { name: "O que você precisa?" }),
     ).toBeVisible();
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= window.innerWidth,
       ),
     ).toBe(true);
+    if (width >= 1000)
+      await expect(
+        page.getByRole("menuitem", { name: "Meus requerimentos", exact: true }),
+      ).toBeVisible();
+    await page.screenshot({
+      path: `test-results/services-home-${width}.png`,
+      fullPage: true,
+    });
   }
-  await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByRole("menuitem", { name: "Notícias", exact: true }).click();
   await expect(
-    page.getByRole("button", { name: "Acompanhar meu processo" }),
+    page.getByRole("heading", { name: "Notícias da ETR" }),
   ).toBeVisible();
-  await page.screenshot({
-    path: "test-results/client-home-mobile.png",
-    fullPage: true,
-  });
-  await page.getByRole("button", { name: "Trocar protótipo" }).click();
-  await page.getByRole("button", { name: "Explorar Minha terra" }).click();
-  await expect(page.getByText("Vamos cuidar da sua terra?")).toBeVisible();
   await page.reload();
+  await expect(
+    page.getByRole("button", { name: "Trocar protótipo" }),
+  ).toContainText("Central de Serviços");
+  await page.getByRole("button", { name: "Trocar protótipo" }).click();
+  await page.getByRole("button", { name: "Explorar Tradicional" }).click();
   await expect(page.getByText("Vamos cuidar da sua terra?")).toBeVisible();
   expect(errors).toEqual([]);
+});
+
+test("ETR GEO opcional não interfere no Monitora e persiste entre modelos", async ({
+  page,
+}) => {
+  await page.goto("/prototipos");
+  await page.getByRole("switch", { name: "Habilitar ETR GEO" }).click();
+  await expect(
+    page.getByRole("switch", { name: "Habilitar ETR GEO" }),
+  ).not.toBeChecked();
+  await page
+    .getByRole("button", { name: "Explorar Central de Serviços" })
+    .click();
+  await page
+    .getByRole("button", { name: "Entrar na demonstração", exact: true })
+    .click();
+  await page.goto("/servicos");
+  await expect(
+    page.getByRole("heading", { name: "Serviços ETR" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button").filter({ hasText: "ETR GEO" }),
+  ).toHaveCount(0);
+  await page.getByRole("button").filter({ hasText: "ETR Monitora" }).click();
+  await page
+    .getByRole("button")
+    .filter({ hasText: "Fazenda São José" })
+    .click();
+  await expect(
+    page.getByText("Uma atualização para conferir", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Visualizar no mapa" }),
+  ).toHaveCount(0);
+  await page.goto("/mapa/sao-jose");
+  await expect(page.getByText("ETR GEO não habilitado")).toBeVisible();
+  await page.goto("/prototipos");
+  await page.getByRole("button", { name: "Explorar Minha ETR" }).click();
+  await page.goto("/imovel/sao-jose");
+  await expect(
+    page.getByText("Mapa ilustrativo • Toque para explorar as informações"),
+  ).toHaveCount(0);
+  await page.goto("/prototipos");
+  await page.reload();
+  await expect(
+    page.getByRole("switch", { name: "Habilitar ETR GEO" }),
+  ).not.toBeChecked();
+  await page.getByRole("switch", { name: "Habilitar ETR GEO" }).click();
+  await page.getByRole("button", { name: "Explorar Minha ETR" }).click();
+  await page.goto("/servicos");
+  await page.getByRole("button").filter({ hasText: "ETR GEO" }).click();
+  await page
+    .getByRole("button")
+    .filter({ hasText: "Fazenda São José" })
+    .click();
+  await expect(page).toHaveURL(/mapa\/sao-jose/);
+  await expect(
+    page.getByText("Localização ilustrativa", { exact: true }),
+  ).toBeVisible();
 });

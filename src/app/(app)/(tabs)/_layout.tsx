@@ -1,19 +1,24 @@
 import { Tabs } from "expo-router";
-import { Icon, IconName } from "@/components/ui";
+import { useWindowDimensions } from "react-native";
+import { Icon } from "@/components/ui";
+import { mobileNavigation } from "@/components/navigation";
 import { colors } from "@/theme";
 import { useData } from "@/hooks/useCitizen";
 import { usePrototype } from "@/hooks/usePrototype";
-const tabs: { name: string; title: string; icon: IconName }[] = [
-  { name: "index", title: "Início", icon: "home" },
-  { name: "processos", title: "Processos", icon: "layers" },
-  { name: "servicos", title: "Serviços", icon: "grid" },
-  { name: "alertas", title: "Alertas", icon: "bell" },
-  { name: "perfil", title: "Perfil", icon: "user" },
-];
+
 export default function TabLayout() {
   const data = useData();
   const { model } = usePrototype();
-  const journey = model === "caminho";
+  const wide = useWindowDimensions().width >= 1000 && model !== "original";
+  const tabs = mobileNavigation(model);
+  const hidden = [
+    "index",
+    "processos",
+    "servicos",
+    "alertas",
+    "noticias",
+    "perfil",
+  ].filter((name) => !tabs.some((tab) => tab.name === name));
   const unread = data.alerts.filter((item) => !item.read).length;
   return (
     <Tabs
@@ -22,9 +27,10 @@ export default function TabLayout() {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.muted,
         tabBarStyle: {
-          backgroundColor: journey ? "#F5F1E8" : colors.surface,
+          display: wide ? "none" : "flex",
+          backgroundColor: colors.surface,
           width: "100%",
-          maxWidth: journey ? 1100 : 640,
+          maxWidth: model === "original" ? 640 : 1100,
           alignSelf: "center",
           borderTopColor: colors.border,
           minHeight: 78,
@@ -49,6 +55,9 @@ export default function TabLayout() {
             tabBarBadgeStyle: { backgroundColor: colors.primary, fontSize: 10 },
           }}
         />
+      ))}
+      {hidden.map((name) => (
+        <Tabs.Screen key={name} name={name} options={{ href: null }} />
       ))}
     </Tabs>
   );

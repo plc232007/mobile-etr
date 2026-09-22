@@ -1,12 +1,12 @@
 import { StyleSheet } from "react-native";
 
 export const pathColors = {
-  paper: "#F5F1E8",
+  paper: "#F4F7F2",
   ink: "#203E36",
   muted: "#59675D",
   line: "#D8D2C5",
-  accent: "#9B482A",
-  peach: "#F1DCC9",
+  accent: "#174B39",
+  peach: "#EAF1E9",
 };
 
 export const pathStyles = StyleSheet.create({

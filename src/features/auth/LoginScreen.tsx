@@ -60,7 +60,7 @@ export default function LoginScreen() {
         {client ? (
           <View style={{ padding: 24, gap: 10 }}>
             <Copy small style={{ color: colors.lime, letterSpacing: 2 }}>
-              ÁREA DO CLIENTE
+              CENTRAL DE SERVIÇOS ETR
             </Copy>
             <Text
               style={{
@@ -70,7 +70,7 @@ export default function LoginScreen() {
                 fontWeight: "700",
               }}
             >
-              Mais perto da sua terra.{"\n"}Mais perto de você.
+              Os serviços da ETR.{"\n"}Mais perto de você.
             </Text>
             <Copy style={{ color: "#DFEBDD" }}>
               Serviços e acompanhamento da regularização rural em um só lugar.
@@ -92,7 +92,7 @@ export default function LoginScreen() {
           }}
         >
           {client
-            ? "O próximo passo está aqui."
+            ? "O que você deseja fazer?"
             : "Sua terra. Seu futuro.\nA gente cuida junto."}
         </Text>
         <Copy muted>

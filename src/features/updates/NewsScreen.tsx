@@ -1,7 +1,7 @@
 import { Screen } from "@/components/Screen";
 import { Landscape } from "@/components/Landscape";
 import { NewsCard } from "@/components/cards";
-import { Card, Copy } from "@/components/ui";
+import { Card, Copy, EmptyState } from "@/components/ui";
 import { useData } from "@/hooks/useCitizen";
 export default function NewsScreen() {
   const data = useData();
@@ -16,9 +16,17 @@ export default function NewsScreen() {
       <Copy muted small>
         Conteúdo institucional fictício para demonstração.
       </Copy>
-      {data.news.map((item) => (
-        <NewsCard key={item.id} news={item} />
-      ))}
+      {[...data.news]
+        .sort((a, b) => b.date.localeCompare(a.date))
+        .map((item) => (
+          <NewsCard key={item.id} news={item} />
+        ))}
+      {!data.news.length && (
+        <EmptyState
+          title="Nenhuma notícia disponível"
+          description="As novidades da ETR aparecerão aqui."
+        />
+      )}
     </Screen>
   );
 }

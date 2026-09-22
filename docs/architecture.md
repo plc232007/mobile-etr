@@ -14,14 +14,16 @@
 
 ## Rotas
 
-`/prototipos` é uma galeria pública dos modelos 01 (Minha terra), 02 (Área do Cliente) e 03 (Meu caminho). `PrototypeProvider` persiste somente a escolha visual em `etr:prototype`, separada da sessão e dos dados de domínio. Login e início adaptam a apresentação; o modelo 03 também tem um catálogo próprio de serviços. Os fluxos de detalhe são compartilhados. A faixa de troca fica disponível no componente `Screen`.
+`/prototipos` compara Tradicional, Central de Serviços e Minha ETR. `PrototypeProvider` mantém os identificadores internos `original`, `cliente` e `caminho`, persistidos em `etr:prototype`, para preservar escolhas anteriores. `etr:geo-enabled` controla somente a disponibilidade dos mapas, sem alterar imóveis ou regras de negócio.
 
-O modelo 03 concentra suas telas e estilos em `src/features/path`: início por tarefas / processos / imóveis, login e serviços pesquisáveis por intenção. O shell usa até 1100 px e fundo areia, com duas colunas no início e login a partir de 850 px. Os cinco destinos da navegação principal são preservados. Busca ignora acentos e combina com filtros; listas e contagens derivam do estado de domínio, incluindo estados vazios.
+O modelo 01 preserva a experiência original. O modelo 02 usa `ClientHomeScreen` como central de serviços. O modelo 03 usa `PathHomeScreen` como central pessoal. Os dois compartilham `ServiceCatalogScreen`, com catálogo em `src/features/services/catalog.ts`, busca sem acentos e filtros. As informações do painel pessoal derivam de pendências, processos, documentos, pagamentos e alertas existentes.
 
-No modelo 02, o imóvel selecionado determina processo, pendências, parcela, mapa e monitoramento. `/pendencias?propertyId=...` restringe os envios ao imóvel correspondente; sem esse parâmetro, mantém a central geral. A seleção de imóvel vale enquanto a tela inicial estiver montada.
+`components/navigation.ts` define as diferenças de navegação. O shell dos modelos 2 e 3 aceita até 1100 px; a partir de 1000 px, usa menu superior e oculta a barra inferior. `/noticias` passa a integrar o grupo de abas, mantendo a URL. Rotas ocultas da barra seguem acessíveis por serviços e links. O GEO é filtrado no catálogo e protegido em `/geo` e `/mapa/[id]`; o Monitora tem acesso próprio em `/monitora` e funciona sem mapas.
+
+`/pendencias?propertyId=...` restringe os envios ao imóvel correspondente; sem esse parâmetro, mantém a central geral. As etapas dos requerimentos, transições e dados fictícios foram preservados.
 
 `/login`, `/`, `/processos`, `/servicos`, `/alertas`, `/perfil`.
-Detalhes: `/processo/[id]`, `/pendencias`, `/requerimento`, `/boletos`, `/boleto/[id]`, `/editais`, `/edital/[id]`, `/imoveis`, `/imovel/[id]`, `/documentos`, `/documento/[id]`, `/certidao`, `/mapa/[id]`, `/monitoramento/[id]`, `/jornada`, `/atendimento`, `/agendamento`, `/noticias`, `/noticia/[id]`, `/configuracoes`.
+Detalhes: `/geo`, `/monitora`, `/processo/[id]`, `/pendencias`, `/requerimento`, `/boletos`, `/boleto/[id]`, `/editais`, `/edital/[id]`, `/imoveis`, `/imovel/[id]`, `/documentos`, `/documento/[id]`, `/certidao`, `/mapa/[id]`, `/monitoramento/[id]`, `/jornada`, `/atendimento`, `/agendamento`, `/noticias`, `/noticia/[id]`, `/configuracoes`.
 
 ## Comportamentos
 

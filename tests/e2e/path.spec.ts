@@ -1,42 +1,70 @@
 import { test, expect } from "@playwright/test";
 import { initialData } from "../../src/mocks/data";
 
-test("modelo 3: tarefas, acompanhamento, imóveis, serviços e troca persistida", async ({
+test("Minha ETR: pendência resolvida, certidão, atividades e navegação", async ({
   page,
 }) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/prototipos");
-  await page.getByRole("button", { name: "Explorar Meu caminho" }).click();
+  await page.getByRole("button", { name: "Explorar Minha ETR" }).click();
   await expect(
     page.getByRole("heading", { name: "Entre no seu espaço" }),
-  ).toBeVisible();
-  await page.getByRole("button", { name: "Continuar", exact: true }).click();
-  await expect(
-    page.getByText("Use 000.000.000-00 para testar o acesso da demonstração."),
   ).toBeVisible();
   await page
     .getByRole("button", { name: "Entrar na demonstração", exact: true })
     .click();
+  await expect(page.getByRole("tab", { name: /Solicitações/ })).toBeVisible();
+  await expect(page.getByRole("tab", { name: /Notificações/ })).toBeVisible();
   await page
-    .getByRole("button", {
-      name: "Enviar documento: Cadastro Ambiental Rural — CAR",
-    })
+    .getByRole("button", { name: "Enviar documento", exact: true })
     .click();
-  await expect(page).toHaveURL(/pendencias\?propertyId=boa-esperanca/);
+  const chooser = page.waitForEvent("filechooser");
+  await page
+    .getByRole("button", { name: "Escolher arquivo", exact: true })
+    .click();
+  await (
+    await chooser
+  ).setFiles({
+    name: "car.pdf",
+    mimeType: "application/pdf",
+    buffer: Buffer.from("%PDF-1.4\nETR demo"),
+  });
+  await page
+    .getByRole("button", { name: "Enviar documento", exact: true })
+    .click();
+  await expect(
+    page.getByText("Recebido para conferência", { exact: true }),
+  ).toBeVisible();
   await page.goto("/");
-  await page.getByRole("tab", { name: "Em andamento", exact: true }).click();
-  await page.getByRole("button", { name: "Acompanhar 2026.000098" }).click();
-  await expect(page).toHaveURL(/processo\/cadastro/);
+  await expect(
+    page.getByRole("button", { name: "Enviar documento", exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByText(
+      "Seus envios estão em dia. Os documentos recebidos serão conferidos pela equipe.",
+    ),
+  ).toBeVisible();
+  await page
+    .getByRole("button")
+    .filter({ hasText: "PROTOCOLO 2026.000123" })
+    .click();
+  await expect(
+    page.getByText("CAR recebido para conferência").filter({ visible: true }),
+  ).toBeVisible();
+  await page.goto("/certidao");
+  await page.getByRole("button", { name: "Consultar", exact: true }).click();
+  await expect(page.getByText("Certidão disponível (simulação)")).toBeVisible();
   await page.goto("/");
-  await page.getByRole("tab", { name: "Meus imóveis", exact: true }).click();
-  await page.getByRole("button", { name: "Abrir Fazenda São José" }).click();
-  await expect(page).toHaveURL(/imovel\/sao-jose/);
+  await page
+    .getByRole("button", { name: "Visualizar certidão", exact: true })
+    .click();
+  await expect(page).toHaveURL(/documento\/certidao-2026/);
   await page.goto("/");
-  for (const width of [320, 390, 1440]) {
+  for (const width of [320, 390, 1000, 1440]) {
     await page.setViewportSize({ width, height: 950 });
     await expect(
-      page.getByRole("tab", { name: "Para resolver", exact: true }),
+      page.getByRole("heading", { name: "Sua atenção agora" }),
     ).toBeVisible();
     expect(
       await page.evaluate(
@@ -44,65 +72,61 @@ test("modelo 3: tarefas, acompanhamento, imóveis, serviços e troca persistida"
       ),
     ).toBe(true);
     await page.screenshot({
-      path: `test-results/path-home-${width}.png`,
+      path: `test-results/personal-home-${width}.png`,
       fullPage: true,
     });
   }
-  await page
-    .getByRole("button", { name: "Encontrar um serviço", exact: true })
-    .click();
-  await page.getByLabel("Buscar serviço: boleto, documento…").fill("certidao");
   await expect(
-    page.getByText("1 serviço encontrado", { exact: true }),
+    page.getByRole("menuitem", { name: "Solicitações", exact: true }),
   ).toBeVisible();
-  await page
-    .getByRole("button")
-    .filter({ hasText: "Preciso de uma certidão" })
-    .click();
-  await expect(page).toHaveURL(/certidao/);
-  await page.goto("/servicos");
-  await page.getByRole("button", { name: "Resolver", exact: true }).click();
-  await page
-    .getByLabel("Buscar serviço: boleto, documento…")
-    .fill("inexistente");
-  await expect(page.getByText("Vamos tentar de outro jeito?")).toBeVisible();
-  await page.getByRole("button", { name: "Limpar busca e filtros" }).click();
-  await expect(page.getByText("12 serviços encontrados")).toBeVisible();
   await page.reload();
   await expect(
     page.getByRole("button", { name: "Trocar protótipo" }),
-  ).toContainText("03 · Meu caminho");
-  await page.getByRole("button", { name: "Trocar protótipo" }).click();
-  await page.getByRole("button", { name: "Explorar Minha terra" }).click();
-  await expect(page.getByText("Vamos cuidar da sua terra?")).toBeVisible();
+  ).toContainText("Minha ETR");
   expect(errors).toEqual([]);
 });
 
-test("modelo 3: sem tarefas ou imóveis", async ({ page }) => {
+test("Minha ETR: estados vazios e catálogo pesquisável", async ({ page }) => {
   await page.goto("/prototipos");
-  await page.getByRole("button", { name: "Explorar Meu caminho" }).click();
+  await page.getByRole("button", { name: "Explorar Minha ETR" }).click();
   await page
     .getByRole("button", { name: "Entrar na demonstração", exact: true })
     .click();
   await expect(
-    page.getByRole("tab", { name: "Para resolver", exact: true }),
+    page.getByRole("heading", { name: "Sua atenção agora" }),
   ).toBeVisible();
   await page.evaluate((seed) => {
-    const data = JSON.parse(
-      localStorage.getItem("etr:demo:v1") ?? JSON.stringify(seed),
-    );
+    const data = JSON.parse(JSON.stringify(seed));
     data.pending = [];
     data.payments = [];
     data.processes = [];
+    data.documents = [];
     data.properties = [];
+    data.alerts = [];
+    data.news = [];
+    data.notices = [];
     localStorage.setItem("etr:demo:v1", JSON.stringify(data));
   }, initialData);
   await page.reload();
   await expect(
-    page.getByRole("heading", { name: "Tudo em dia", exact: true }),
+    page.getByText("Nenhuma pendência de envio", { exact: true }),
   ).toBeVisible();
-  await page.getByRole("tab", { name: "Em andamento", exact: true }).click();
-  await expect(page.getByText("Nenhum pedido em andamento")).toBeVisible();
-  await page.getByRole("tab", { name: "Meus imóveis", exact: true }).click();
-  await expect(page.getByText("Nenhum imóvel vinculado")).toBeVisible();
+  await expect(
+    page.getByText("Nenhum requerimento em andamento"),
+  ).toBeVisible();
+  await expect(page.getByText("Nenhum boleto em aberto.")).toBeVisible();
+  await expect(page.getByText("Nenhuma certidão disponível.")).toBeVisible();
+  await page.goto("/servicos");
+  await page.getByLabel("Buscar serviço...").fill("inexistente");
+  await expect(page.getByText("Nenhum serviço encontrado")).toBeVisible();
+  await page.getByRole("button", { name: "Limpar busca e filtros" }).click();
+  await page.getByRole("button", { name: "Acompanhar", exact: true }).click();
+  await page.getByLabel("Buscar serviço...").fill("monitora");
+  await expect(
+    page.getByText("1 serviço encontrado", { exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button").filter({ hasText: "ETR Monitora" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Nenhum imóvel vinculado" }),
+  ).toBeVisible();
 });

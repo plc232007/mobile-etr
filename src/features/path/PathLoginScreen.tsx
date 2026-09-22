@@ -36,20 +36,20 @@ export default function PathLoginScreen() {
         }}
       >
         <View style={{ flex: wide ? 1 : undefined, gap: 24 }}>
-          <Text style={s.label}>ETR / MEU CAMINHO</Text>
+          <Text style={s.label}>MINHA ETR / CENTRAL PESSOAL</Text>
           <Text
             accessibilityRole="header"
             style={[s.headline, wide && { fontSize: 54, lineHeight: 60 }]}
           >
-            Da sua terra.{"\n"}Para o seu futuro.
+            Sua relação com a ETR.{"\n"}Mais fácil de acompanhar.
           </Text>
           <Copy style={{ color: c.muted }}>
-            Um caminho mais claro para cuidar da sua regularização rural.
+            Pendências, solicitações e atualizações em um espaço pessoal.
           </Copy>
           {[
             {
               title: "Saiba o que fazer",
-              detail: "Documentos e parcelas em uma lista de ações.",
+              detail: "Veja o que precisa da sua atenção.",
             },
             {
               title: "Acompanhe cada avanço",
@@ -57,7 +57,7 @@ export default function PathLoginScreen() {
             },
             {
               title: "Conte com orientação",
-              detail: "Serviços organizados pela sua necessidade.",
+              detail: "Encontre ajuda e os serviços da ETR.",
             },
           ].map((item, index) => (
             <Row key={item.title} style={{ alignItems: "flex-start" }}>

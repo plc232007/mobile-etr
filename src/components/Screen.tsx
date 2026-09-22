@@ -1,5 +1,11 @@
 import React from "react";
-import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+  useWindowDimensions,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router, usePathname } from "expo-router";
 import { useNetworkState } from "expo-network";
@@ -8,6 +14,7 @@ import { useCitizen } from "@/hooks/useCitizen";
 import { Copy, go, Icon, Row, Title } from "./ui";
 import { Brand } from "./Brand";
 import { prototypeLabels, usePrototype } from "@/hooks/usePrototype";
+import { desktopNavigation } from "./navigation";
 export function Screen({
   title,
   subtitle,
@@ -22,18 +29,21 @@ export function Screen({
   back?: boolean;
   showHeader?: boolean;
 }>) {
-  const { data } = useCitizen();
+  const { data, authenticated } = useCitizen();
   const { model } = usePrototype();
   const pathname = usePathname();
   const journey = model === "caminho" && pathname !== "/prototipos";
+  const modern = model !== "original" && pathname !== "/prototipos";
+  const desktop =
+    useWindowDimensions().width >= 1000 && modern && authenticated;
   const network = useNetworkState();
   const unread = data?.alerts.filter((item) => !item.read).length ?? 0;
   return (
     <SafeAreaView
       edges={["top", "left", "right"]}
-      style={[styles.safe, journey && { backgroundColor: "#F5F1E8" }]}
+      style={[styles.safe, journey && { backgroundColor: "#F4F7F2" }]}
     >
-      <View style={[styles.shell, journey && { maxWidth: 1100 }]}>
+      <View style={[styles.shell, modern && { maxWidth: 1100 }]}>
         {pathname !== "/prototipos" && (
           <Pressable
             accessibilityRole="button"
@@ -43,7 +53,7 @@ export function Screen({
               minHeight: 44,
               paddingHorizontal: 24,
               paddingVertical: 8,
-              backgroundColor: journey ? "#E8E1D3" : colors.primarySoft,
+              backgroundColor: colors.primarySoft,
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
@@ -61,49 +71,93 @@ export function Screen({
             </Row>
           </Pressable>
         )}
-        {showHeader && (
+        {desktop && showHeader ? (
           <View style={styles.header}>
-            {home ? (
-              <>
-                <Brand />
+            <Brand variant="compact" />
+            <View
+              accessibilityRole="menubar"
+              style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+            >
+              {desktopNavigation(model).map((item) => (
                 <Pressable
-                  accessibilityRole="button"
-                  accessibilityLabel={`Alertas, ${unread} não lidos`}
-                  onPress={() => go("/alertas")}
-                  style={styles.headerButton}
+                  key={item.name}
+                  accessibilityRole="menuitem"
+                  accessibilityState={{ selected: pathname === item.href }}
+                  onPress={() => go(item.href)}
+                  style={{
+                    paddingHorizontal: 12,
+                    minHeight: 48,
+                    justifyContent: "center",
+                    borderRadius: 8,
+                    backgroundColor:
+                      pathname === item.href
+                        ? colors.primarySoft
+                        : "transparent",
+                  }}
                 >
-                  <Icon name="bell" />
-                  {unread > 0 && <View style={styles.dot} />}
+                  <Copy small style={{ fontWeight: "600" }}>
+                    {item.title}
+                  </Copy>
                 </Pressable>
-              </>
-            ) : (
-              <>
-                <Row style={{ flex: 1 }}>
-                  {back && (
-                    <Pressable
-                      accessibilityRole="button"
-                      accessibilityLabel="Voltar"
-                      onPress={() =>
-                        router.canGoBack() ? router.back() : router.replace("/")
-                      }
-                      style={styles.headerButton}
-                    >
-                      <Icon name="arrow-left" />
-                    </Pressable>
-                  )}
-                  <Brand variant="compact" />
-                </Row>
-                <Pressable
-                  accessibilityRole="button"
-                  accessibilityLabel="Ajuda"
-                  onPress={() => go("/atendimento")}
-                  style={styles.headerButton}
-                >
-                  <Icon name="help-circle" size={21} />
-                </Pressable>
-              </>
-            )}
+              ))}
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={`Notificações, ${unread} não lidas`}
+                onPress={() => go("/alertas")}
+                style={styles.headerButton}
+              >
+                <Icon name="bell" />
+                {unread > 0 && <View style={styles.dot} />}
+              </Pressable>
+            </View>
           </View>
+        ) : (
+          showHeader && (
+            <View style={styles.header}>
+              {home ? (
+                <>
+                  <Brand />
+                  <Pressable
+                    accessibilityRole="button"
+                    accessibilityLabel={`Alertas, ${unread} não lidos`}
+                    onPress={() => go("/alertas")}
+                    style={styles.headerButton}
+                  >
+                    <Icon name="bell" />
+                    {unread > 0 && <View style={styles.dot} />}
+                  </Pressable>
+                </>
+              ) : (
+                <>
+                  <Row style={{ flex: 1 }}>
+                    {back && (
+                      <Pressable
+                        accessibilityRole="button"
+                        accessibilityLabel="Voltar"
+                        onPress={() =>
+                          router.canGoBack()
+                            ? router.back()
+                            : router.replace("/")
+                        }
+                        style={styles.headerButton}
+                      >
+                        <Icon name="arrow-left" />
+                      </Pressable>
+                    )}
+                    <Brand variant="compact" />
+                  </Row>
+                  <Pressable
+                    accessibilityRole="button"
+                    accessibilityLabel="Ajuda"
+                    onPress={() => go("/atendimento")}
+                    style={styles.headerButton}
+                  >
+                    <Icon name="help-circle" size={21} />
+                  </Pressable>
+                </>
+              )}
+            </View>
+          )
         )}
         <ScrollView
           keyboardShouldPersistTaps="handled"

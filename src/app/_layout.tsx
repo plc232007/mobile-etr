@@ -7,6 +7,7 @@ import { CitizenProvider, useCitizen } from "@/hooks/useCitizen";
 import { Copy, ErrorState, LoadingState } from "@/components/ui";
 import { colors } from "@/theme";
 import { PrototypeProvider } from "@/hooks/usePrototype";
+import { KeyboardFocus } from "@/components/KeyboardFocus";
 function Root() {
   const { loading, error, feedback, reload, reset } = useCitizen();
   if (loading) return <LoadingState />;
@@ -17,6 +18,7 @@ function Root() {
   return (
     <View style={{ flex: 1, backgroundColor: colors.background }}>
       <StatusBar style="dark" />
+      <KeyboardFocus />
       <Stack
         screenOptions={{
           headerShown: false,

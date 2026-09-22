@@ -12,9 +12,22 @@ import {
   Title,
 } from "@/components/ui";
 import { useData } from "@/hooks/useCitizen";
+import { usePrototype } from "@/hooks/usePrototype";
 export default function MapScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const item = useData().properties.find((p) => p.id === id);
+  const { geoEnabled } = usePrototype();
+  if (!geoEnabled)
+    return (
+      <Screen title="ETR GEO">
+        <EmptyState
+          title="ETR GEO não habilitado"
+          description="Os demais serviços continuam disponíveis."
+          action="Ver serviços"
+          onPress={() => go("/servicos")}
+        />
+      </Screen>
+    );
   return (
     <Screen
       title="Meu imóvel no mapa"

@@ -23,6 +23,9 @@ import {
 } from "./ui";
 import { date, daysUntil, money } from "@/utils/format";
 import { colors } from "@/theme";
+import { useData } from "@/hooks/useCitizen";
+import { usePrototype } from "@/hooks/usePrototype";
+import { processStages } from "./Timeline";
 export function ProcessCard({
   process,
   property,
@@ -30,6 +33,14 @@ export function ProcessCard({
   process: Process;
   property?: Property;
 }) {
+  const { model } = usePrototype();
+  const data = useData();
+  const pending = data.pending.filter(
+    (item) => item.processId === process.id && !item.resolved,
+  ).length;
+  const latest = [...process.movements].sort((a, b) =>
+    b.date.localeCompare(a.date),
+  )[0];
   return (
     <Card onPress={() => go(`/processo/${process.id}`)}>
       <Row style={{ justifyContent: "space-between" }}>
@@ -42,6 +53,36 @@ export function ProcessCard({
         label={process.status}
         tone={process.status.includes("pendente") ? "warning" : "info"}
       />
+      {model !== "original" && (
+        <>
+          <Copy small muted>
+            Última atualização: {date(latest?.date ?? process.openedAt)}
+          </Copy>
+          <Copy small>
+            {pending
+              ? `${pending} pendência${pending > 1 ? "s" : ""} de envio`
+              : "Nenhuma pendência de envio"}
+          </Copy>
+          <Row style={{ gap: 5 }}>
+            {processStages.map((stage, index) => (
+              <View
+                key={stage}
+                style={{
+                  flex: 1,
+                  height: 4,
+                  borderRadius: 2,
+                  backgroundColor:
+                    index <= process.stage ? colors.primary : colors.border,
+                }}
+              />
+            ))}
+          </Row>
+          <Copy small muted>
+            Etapa {process.stage + 1} de {processStages.length} ·{" "}
+            {processStages[process.stage]}
+          </Copy>
+        </>
+      )}
     </Card>
   );
 }

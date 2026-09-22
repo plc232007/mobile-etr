@@ -3,8 +3,10 @@ import { Screen } from "@/components/Screen";
 import { ProcessCard } from "@/components/cards";
 import { Button, EmptyState, Filters, go, SearchBar } from "@/components/ui";
 import { useData } from "@/hooks/useCitizen";
+import { usePrototype } from "@/hooks/usePrototype";
 export default function ProcessesScreen() {
   const data = useData();
+  const { model } = usePrototype();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("Todos");
   const list = data.processes.filter(
@@ -19,7 +21,7 @@ export default function ProcessesScreen() {
   );
   return (
     <Screen
-      title="Meus processos"
+      title={model === "original" ? "Meus processos" : "Minhas solicitações"}
       subtitle="Cada etapa da sua regularização, bem aqui."
       back={false}
     >

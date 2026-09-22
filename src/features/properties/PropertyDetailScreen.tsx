@@ -18,9 +18,11 @@ import {
   Title,
 } from "@/components/ui";
 import { useData } from "@/hooks/useCitizen";
+import { usePrototype } from "@/hooks/usePrototype";
 export default function PropertyDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const data = useData();
+  const { geoEnabled } = usePrototype();
   const item = data.properties.find((p) => p.id === id);
   if (!item)
     return (
@@ -41,15 +43,19 @@ export default function PropertyDetailScreen() {
         </Copy>
         <Copy>Região administrativa: {item.region}</Copy>
       </Card>
-      <Card
-        onPress={() => go(`/mapa/${id}`)}
-        style={{ padding: 0, overflow: "hidden" }}
-      >
-        <PropertyMap />
-      </Card>
-      <Copy muted small>
-        Mapa ilustrativo • Toque para explorar as informações
-      </Copy>
+      {geoEnabled && (
+        <>
+          <Card
+            onPress={() => go(`/mapa/${id}`)}
+            style={{ padding: 0, overflow: "hidden" }}
+          >
+            <PropertyMap />
+          </Card>
+          <Copy muted small>
+            Mapa ilustrativo • Toque para explorar as informações
+          </Copy>
+        </>
+      )}
       <MenuItem
         title="Monitoramento do imóvel"
         description={

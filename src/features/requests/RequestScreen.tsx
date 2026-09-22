@@ -39,8 +39,10 @@ export default function RequestScreen() {
   );
   const [confirmed, setConfirmed] = useState(false);
   const [result, setResult] = useState("");
+  const [attempted, setAttempted] = useState(false);
   const submitted = useRef(false);
   const change = (patch: Partial<RequestDraft>) => {
+    setAttempted(false);
     const next = { ...draft, ...patch };
     setDraft(next);
     update((current) => ({ ...current, draft: next }));
@@ -93,6 +95,9 @@ export default function RequestScreen() {
       {draft.step === 1 && (
         <>
           <Title>Qual serviço você deseja solicitar?</Title>
+          <Copy muted small>
+            Obrigatório: escolha um tipo de requerimento.
+          </Copy>
           {services.map((service) => (
             <Choice
               key={service}
@@ -107,6 +112,9 @@ export default function RequestScreen() {
         <>
           <Title>Selecione o imóvel</Title>
           <Copy muted>Qual imóvel está relacionado ao seu pedido?</Copy>
+          <Copy muted small>
+            Obrigatório: selecione o imóvel.
+          </Copy>
           {data.properties.map((item) => (
             <Choice
               key={item.id}
@@ -116,11 +124,22 @@ export default function RequestScreen() {
               onPress={() => change({ propertyId: item.id })}
             />
           ))}
+          {!data.properties.length && (
+            <EmptyState
+              title="Nenhum imóvel vinculado"
+              description="Entre em contato com a ETR para receber orientação. Seu rascunho pode ser salvo."
+              action="Pedir orientação"
+              onPress={() => go("/atendimento")}
+            />
+          )}
         </>
       )}
       {draft.step === 3 && (
         <>
           <Title>Vamos reunir os documentos</Title>
+          <Copy muted small>
+            Obrigatório nesta demonstração: adicione pelo menos um documento.
+          </Copy>
           <InfoCard
             title="Documentos de apoio"
             description="Para regularização: identificação, comprovante de ocupação e CAR. Neste protótipo, anexe pelo menos um arquivo para experimentar o envio."
@@ -221,12 +240,22 @@ export default function RequestScreen() {
         </>
       )}
       <View style={{ gap: 8 }}>
+        {attempted && !valid && (
+          <Copy style={{ color: "#AD3434" }}>
+            {draft.step === 1
+              ? "Selecione o tipo de requerimento para continuar."
+              : draft.step === 2
+                ? "Selecione um imóvel para continuar."
+                : "Adicione pelo menos um documento para continuar."}
+          </Copy>
+        )}
         {draft.step < 5 ? (
           <Button
             title="Continuar"
             icon="arrow-right"
-            disabled={!valid}
-            onPress={() => change({ step: draft.step + 1 })}
+            onPress={() =>
+              valid ? change({ step: draft.step + 1 }) : setAttempted(true)
+            }
           />
         ) : (
           <Button

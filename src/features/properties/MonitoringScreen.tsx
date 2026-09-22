@@ -11,9 +11,11 @@ import {
   Title,
 } from "@/components/ui";
 import { useData } from "@/hooks/useCitizen";
+import { usePrototype } from "@/hooks/usePrototype";
 export default function MonitoringScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const item = useData().properties.find((p) => p.id === id);
+  const { geoEnabled } = usePrototype();
   return (
     <Screen
       title="Monitoramento do imóvel"
@@ -50,11 +52,13 @@ export default function MonitoringScreen() {
             title="Acompanhamento do território"
             description="Estas informações ajudam você a conhecer a situação do imóvel. Eventuais atualizações serão avaliadas pela equipe com você."
           />
-          <Button
-            title="Visualizar no mapa"
-            icon="map"
-            onPress={() => go(`/mapa/${id}`)}
-          />
+          {geoEnabled && (
+            <Button
+              title="Visualizar no mapa"
+              icon="map"
+              onPress={() => go(`/mapa/${id}`)}
+            />
+          )}
         </>
       ) : (
         <EmptyState

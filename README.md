@@ -17,13 +17,17 @@ Abra a URL exibida pelo Expo e escolha **Entrar na demonstração**. Não é nec
 
 Acesse **`/prototipos`** ou use **Trocar** na faixa superior de qualquer tela:
 
-- **01 · Minha terra:** proposta original, com resumo pessoal e acessos rápidos.
-- **02 · Área do Cliente:** nova proposta com seleção de imóvel, andamento, próximo passo, pendências e boleto daquele imóvel; serviços online, ETR GEO, ETR Monitora e orientação ao cidadão.
-- **03 · Meu caminho:** alternativa com layout editorial em tons de areia e terracota, login próprio, início organizado em Para resolver / Em andamento / Meus imóveis e catálogo de serviços com busca e filtros por necessidade. No desktop, início e login usam duas colunas; no celular, o conteúdo é empilhado.
+- **01 · Tradicional:** proposta original preservada como referência, com resumo pessoal e navegação tradicional.
+- **02 · Central de Serviços:** busca na home; requerimento em destaque, boleto e certidão logo abaixo; editais, Monitora, notícias e GEO como acessos secundários. Responde “O que quero fazer agora?”.
+- **03 · Minha ETR:** pendências e ações necessárias primeiro, seguidas de requerimentos, boletos, certidões e ações rápidas. Atividades recentes, Monitora, editais e notícias completam a central pessoal. Responde “O que está acontecendo comigo?”.
 
-A escolha fica salva no aparelho. Os três modelos compartilham sessão, dados fictícios e fluxos; trocar de modelo não apaga envios ou requerimentos. O primeiro acesso mantém o modelo original. A galeria pode ser acessada sem login. No modelo 03, valide com o cliente a facilidade de encontrar uma tarefa, distinguir pedidos enviados de ações pendentes e buscar um serviço sem conhecer seu nome oficial. As telas de detalhe e as regras dos serviços são compartilhadas.
+As propostas seguem [prototipos_etr.md](prototipos_etr.md). Os três modelos compartilham sessão, dados e fluxos; trocar de modelo não apaga envios ou rascunhos. A escolha fica salva no aparelho, preservando as seleções das versões anteriores. O primeiro acesso mantém o modelo original.
 
-A proposta 02 segue o briefing de `codex.md` e usa como referência a [Área do Cliente da ETR](https://www.etr.df.gov.br/area-do-cliente/), cujo conteúdo público indexado apresenta CPF/CNPJ, primeiro acesso, recuperação e canais de atendimento. A consulta direta ao site retornou HTTP 403 em 22/09/2026; telas autenticadas e regras internas não foram verificadas. O painel por imóvel é uma proposta de UX, e os serviços continuam simulados.
+Na galeria pública, **Habilitar ETR GEO** permite comparar a experiência com e sem mapas. Quando desativado, os acessos desaparecem, as rotas de mapa explicam a indisponibilidade e o Monitora continua funcionando. A escolha é persistida separadamente dos dados pessoais.
+
+Nos modelos 2 e 3, o desktop usa navegação superior compacta a partir de 1000 px. No celular, o modelo 2 tem Início / Serviços / Solicitações / Notícias / Perfil; o modelo 3 tem Início / Solicitações / Serviços / Notificações / Perfil. Os alertas locais continuam acessíveis pelo sino. Detalhes sobre as decisões e os dados disponíveis em [docs/prototipos-etr.md](docs/prototipos-etr.md).
+
+A referência institucional é a [Área do Cliente da ETR](https://www.etr.df.gov.br/area-do-cliente/). A consulta direta anterior retornou HTTP 403; telas autenticadas e regras internas não foram verificadas. Os serviços continuam simulados, sem novas integrações.
 
 ```bash
 npm start       # QR code / servidor Expo

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View } from "react-native";
+import { Switch, View } from "react-native";
 import { router } from "expo-router";
 import { Screen } from "@/components/Screen";
 import { Brand } from "@/components/Brand";
@@ -19,7 +19,7 @@ import { useCitizen } from "@/hooks/useCitizen";
 import { colors } from "@/theme";
 
 export default function PrototypesScreen() {
-  const { model, select } = usePrototype();
+  const { model, select, geoEnabled, setGeoEnabled } = usePrototype();
   const { authenticated } = useCitizen();
   const [busy, setBusy] = useState<Prototype | null>(null);
   const [error, setError] = useState("");
@@ -44,31 +44,50 @@ export default function PrototypesScreen() {
         Escolha uma experiência para navegar. Você pode trocar de modelo a
         qualquer momento, sem perder seus dados de demonstração.
       </Copy>
+      <Card>
+        <Title>ETR GEO opcional</Title>
+        <Copy muted small>
+          Valide os três modelos com ou sem o módulo de mapas. Os demais
+          serviços continuam disponíveis.
+        </Copy>
+        <Row style={{ justifyContent: "space-between" }}>
+          <Copy>Habilitar ETR GEO</Copy>
+          <Switch
+            accessibilityLabel="Habilitar ETR GEO"
+            value={geoEnabled}
+            onValueChange={(enabled) => {
+              void setGeoEnabled(enabled).catch(() =>
+                setError("Não foi possível salvar a opção do ETR GEO."),
+              );
+            }}
+            trackColor={{ true: colors.primary }}
+          />
+        </Row>
+      </Card>
       {(
         [
           {
             id: "caminho",
             number: "03",
-            title: "Meu caminho",
+            title: "Minha ETR",
             description:
-              "Uma experiência organizada pelo que você precisa fazer: tarefas, acompanhamento e imóveis. Layout editorial e serviços por necessidade.",
-            detail:
-              "Agenda de tarefas • Navegação por contexto • Busca de serviços",
+              "O que está acontecendo comigo? Pendências, requerimentos, boletos, certidões e atualizações em uma central pessoal.",
+            detail: "Situação pessoal • Acompanhamento • Atualizações",
           },
           {
             id: "cliente",
             number: "02",
-            title: "Área do Cliente",
+            title: "Central de Serviços",
             description:
-              "Sua regularização em primeiro lugar. Escolha o imóvel, veja o que precisa fazer e acesse os serviços da ETR.",
-            detail: "Visão por imóvel • Próximo passo • Serviços online",
+              "O que quero fazer agora? Busca e acesso direto a requerimentos, boletos, certidões e aos demais serviços da ETR.",
+            detail: "Busca de serviços • Ações diretas • Notícias",
           },
           {
             id: "original",
             number: "01",
-            title: "Minha terra",
+            title: "Tradicional",
             description:
-              "A primeira proposta: uma visão geral da sua relação com a ETR, com resumo de processos, pendências e pagamentos.",
+              "Onde encontro a funcionalidade? A proposta original, com navegação tradicional, preservada como referência para comparação.",
             detail: "Resumo pessoal • Acessos rápidos • Atualizações",
           },
         ] as const
@@ -85,7 +104,7 @@ export default function PrototypesScreen() {
             style={{
               backgroundColor:
                 item.id === "caminho"
-                  ? "#E8E1D3"
+                  ? colors.primarySoft
                   : item.id === "cliente"
                     ? colors.primaryDark
                     : colors.primarySoft,
@@ -112,14 +131,12 @@ export default function PrototypesScreen() {
             {item.id === "caminho" ? (
               <Row>
                 <Icon name="navigation" />
-                <Copy>01 Resolver · 02 Acompanhar · 03 Avançar</Copy>
+                <Copy>Minha situação junto à ETR</Copy>
               </Row>
             ) : item.id === "cliente" ? (
               <Row>
                 <Icon name="map-pin" color={colors.lime} />
-                <Copy style={{ color: "white" }}>
-                  Seu imóvel. Seu próximo passo.
-                </Copy>
+                <Copy style={{ color: "white" }}>O que você deseja fazer?</Copy>
               </Row>
             ) : (
               <Landscape height={65} />

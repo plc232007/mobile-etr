@@ -49,6 +49,14 @@ export default function ProcessDetailScreen() {
         <Copy small muted>
           Aberto em {date(process.openedAt)}
         </Copy>
+        <Copy small muted>
+          Última atualização:{" "}
+          {date(
+            [...process.movements].sort((a, b) =>
+              b.date.localeCompare(a.date),
+            )[0]?.date ?? process.openedAt,
+          )}
+        </Copy>
         <MenuItem
           title="Ver informações do imóvel"
           icon="map-pin"
