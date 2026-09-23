@@ -5,7 +5,6 @@ import { Brand } from "@/components/Brand";
 import { Button, Copy, Field, Icon, Row, Title } from "@/components/ui";
 import { useCitizen } from "@/hooks/useCitizen";
 import { pathColors as c, pathStyles as s } from "./pathStyles";
-import { validatePrototypePassword } from "@/services/prototypeAuth";
 
 export default function PathLoginScreen() {
   const { login } = useCitizen();
@@ -19,11 +18,6 @@ export default function PathLoginScreen() {
   const enter = async () => {
     if (![11, 14].includes(identifier.replace(/\D/g, "").length)) {
       setError("Informe um CPF ou CNPJ válido para continuar.");
-      return;
-    }
-    const auth = validatePrototypePassword(password);
-    if (!auth.valid) {
-      setError(auth.message);
       return;
     }
     setBusy(true);
@@ -139,13 +133,13 @@ export default function PathLoginScreen() {
             variant="ghost"
             onPress={() =>
               setHelp(
-                "A senha é definida no ambiente de demonstração e nunca é salva no aparelho. Se você não a recebeu, peça ao responsável pelo protótipo.",
+                "Use o CPF 000.000.000-00 e qualquer senha fictícia. Este login é uma simulação da conta do cidadão.",
               )
             }
           />
           {!!help && <Copy small>{help}</Copy>}
           <Copy small muted>
-            A senha nunca é salva neste protótipo. Use apenas dados fictícios.
+            Acesso simulado: use o CPF 000.000.000-00 e qualquer senha fictícia.
           </Copy>
         </View>
       </View>

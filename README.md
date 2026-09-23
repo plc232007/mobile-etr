@@ -11,11 +11,11 @@ npm install
 npm run web
 ```
 
-Abra a URL exibida pelo Expo e escolha **Entrar na demonstração**. Não é necessário informar dados pessoais. Para testar o campo de login, use `000.000.000-00`.
+Abra a URL exibida pelo Expo. A primeira tela é o **acesso à apresentação**, independente dos protótipos: informe a senha configurada no ambiente para abrir a seleção dos três modelos. Depois de escolher um modelo, o login de cidadão é apenas simulado: use o CPF `000.000.000-00` e qualquer senha fictícia. Não é necessário informar dados pessoais.
 
-### Senha da demonstração
+### Senha de acesso à apresentação
 
-O acesso aos protótipos exige uma senha definida fora do código. Copie `.env.example` para `.env.local`, escolha uma senha com pelo menos 8 caracteres e reinicie o Expo. A variável `EXPO_PUBLIC_ETR_DEMO_PASSWORD` é usada apenas para este protótipo; como qualquer segredo entregue a um aplicativo cliente, ela não substitui autenticação de produção em servidor. A senha não é salva no aparelho.
+O acesso aos protótipos exige uma senha definida fora do código. Copie `.env.example` para `.env.local`, escolha uma senha com pelo menos 8 caracteres e reinicie o Expo. A variável `EXPO_PUBLIC_ETR_DEMO_PASSWORD` é usada apenas para este protótipo; como qualquer segredo entregue a um aplicativo cliente, ela não substitui autenticação de produção em servidor. A senha não é salva no aparelho. O acesso à apresentação fica ativo durante a sessão da aba no navegador (inclusive ao recarregar), ou enquanto o aplicativo nativo estiver aberto. **Sair da apresentação**, na seleção de modelos, encerra esse acesso. A sessão fictícia do cidadão é independente e não permite pular essa entrada. Links diretos, inclusive `/prototipos` e `/login`, passam pelo acesso geral em `/acesso`.
 
 ## Modelos de protótipo
 
@@ -45,15 +45,15 @@ Use um cliente Expo compatível com SDK 55. Câmera e compartilhamento nativo de
 
 O projeto está configurado para publicação web estática. Importe o repositório na Vercel, selecione **Other** como framework e mantenha a raiz do projeto como **Root Directory**. O `vercel.json` define automaticamente:
 
-| Configuração          | Valor                               |
-| --------------------- | ----------------------------------- |
-| Node.js               | `22.x` (definido no `package.json`) |
-| Install Command       | `npm ci`                            |
-| Build Command         | `npm run build`                     |
-| Output Directory      | `dist`                              |
-| Variáveis de ambiente | Nenhuma necessária                  |
+| Configuração          | Valor                                                    |
+| --------------------- | -------------------------------------------------------- |
+| Node.js               | `22.x` (definido no `package.json`)                      |
+| Install Command       | `npm ci`                                                 |
+| Build Command         | `npm run build`                                          |
+| Output Directory      | `dist`                                                   |
+| Variáveis de ambiente | `EXPO_PUBLIC_ETR_DEMO_PASSWORD` (mínimo de 8 caracteres) |
 
-Clique em **Deploy**. As rotas internas têm fallback para `index.html`, permitindo abrir links e recarregar telas como `/boletos` e `/processo/regularizacao`.
+Cadastre `EXPO_PUBLIC_ETR_DEMO_PASSWORD` nas configurações do projeto na Vercel para os ambientes Production e Preview e clique em **Deploy**. O `.env.local` fica fora do Git e não configura o site publicado. Se o site já foi publicado, faça um novo deploy após cadastrar ou alterar a variável: o Expo incorpora o valor durante o build. As rotas internas têm fallback para `index.html`, permitindo abrir links e recarregar telas como `/boletos` e `/processo/regularizacao`.
 
 Passo a passo, alternativa por CLI e verificação após publicar em [docs/deploy-vercel.md](docs/deploy-vercel.md).
 

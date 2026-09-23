@@ -14,7 +14,7 @@ export function validatePrototypePassword(password: string) {
     };
   }
   if (password !== configuredPassword) {
-    return { valid: false, message: "CPF/CNPJ ou senha inválidos." };
+    return { valid: false, message: "Senha de acesso inválida." };
   }
   return { valid: true, message: "" };
 }

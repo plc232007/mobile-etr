@@ -1,5 +1,10 @@
-import { test, expect } from "@playwright/test";
 import { initialData } from "../../src/mocks/data";
+import { test, expect } from "@playwright/test";
+import { unlockPresentation } from "./helpers";
+
+test.beforeEach(async ({ page }) => {
+  await unlockPresentation(page);
+});
 
 test("Minha ETR: pendência resolvida, certidão, atividades e navegação", async ({
   page,
@@ -12,7 +17,7 @@ test("Minha ETR: pendência resolvida, certidão, atividades e navegação", asy
     page.getByRole("heading", { name: "Entre no seu espaço" }),
   ).toBeVisible();
   await page.getByLabel("CPF ou CNPJ", { exact: true }).fill("000.000.000-00");
-  await page.getByLabel("Senha", { exact: true }).fill("ETR-demo-2026!");
+  await page.getByLabel("Senha", { exact: true }).fill("senha-ficticia");
   await page.getByRole("button", { name: "Entrar", exact: true }).click();
   await expect(page.getByRole("tab", { name: /Solicitações/ })).toBeVisible();
   await expect(page.getByRole("tab", { name: /Notificações/ })).toBeVisible();
@@ -90,7 +95,7 @@ test("Minha ETR: estados vazios e catálogo pesquisável", async ({ page }) => {
   await page.goto("/prototipos");
   await page.getByRole("button", { name: "Explorar Minha ETR" }).click();
   await page.getByLabel("CPF ou CNPJ", { exact: true }).fill("000.000.000-00");
-  await page.getByLabel("Senha", { exact: true }).fill("ETR-demo-2026!");
+  await page.getByLabel("Senha", { exact: true }).fill("senha-ficticia");
   await page.getByRole("button", { name: "Entrar", exact: true }).click();
   await expect(
     page.getByRole("heading", { name: "Sua atenção agora" }),

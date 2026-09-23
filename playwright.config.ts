@@ -10,9 +10,9 @@ export default defineConfig({
     trace: "retain-on-failure",
   },
   webServer: {
-    command: "CI=1 npm run web -- --port 8081",
+    command: "CI=1 npm run web -- --port 8081 --clear",
     url: "http://localhost:8081",
-    reuseExistingServer: true,
+    reuseExistingServer: false,
     timeout: 120000,
   },
 });

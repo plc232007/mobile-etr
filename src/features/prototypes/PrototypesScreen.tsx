@@ -17,10 +17,12 @@ import {
 import { Prototype, usePrototype } from "@/hooks/usePrototype";
 import { useCitizen } from "@/hooks/useCitizen";
 import { colors } from "@/theme";
+import { usePresentationAccess } from "@/hooks/usePresentationAccess";
 
 export default function PrototypesScreen() {
   const { model, select } = usePrototype();
   const { authenticated } = useCitizen();
+  const { lock } = usePresentationAccess();
   const [busy, setBusy] = useState<Prototype | null>(null);
   const [error, setError] = useState("");
   const open = async (next: Prototype) => {
@@ -142,6 +144,12 @@ export default function PrototypesScreen() {
         Os três modelos usam os mesmos dados fictícios e fluxos de demonstração.
         A escolha fica salva neste aparelho.
       </Copy>
+      <Button
+        title="Sair da apresentação"
+        variant="ghost"
+        icon="log-out"
+        onPress={lock}
+      />
     </Screen>
   );
 }

@@ -17,7 +17,6 @@ import { useCitizen } from "@/hooks/useCitizen";
 import { colors } from "@/theme";
 import { usePrototype } from "@/hooks/usePrototype";
 import PathLoginScreen from "@/features/path/PathLoginScreen";
-import { validatePrototypePassword } from "@/services/prototypeAuth";
 export default function LoginScreen() {
   const { authenticated, login } = useCitizen();
   const { model } = usePrototype();
@@ -36,11 +35,6 @@ export default function LoginScreen() {
       setError(
         "Informe 11 dígitos para CPF ou 14 para CNPJ. Use 000.000.000-00 para testar.",
       );
-      return;
-    }
-    const auth = validatePrototypePassword(password);
-    if (!auth.valid) {
-      setError(auth.message);
       return;
     }
     setBusy(true);
@@ -119,7 +113,7 @@ export default function LoginScreen() {
         <Copy muted small>
           {mode === "login"
             ? "Um espaço protegido para você e para o seu imóvel."
-            : "A senha é definida no ambiente e nunca é salva no aparelho."}
+            : "Este acesso é simulado. Use apenas dados fictícios."}
         </Copy>
         <Field
           label="CPF ou CNPJ"
@@ -193,7 +187,7 @@ export default function LoginScreen() {
       </Card>
       <InfoCard
         title="Você está em uma demonstração"
-        description="Use os dados de exemplo. A senha vem da configuração privada do ambiente e nunca é salva no aparelho. Nenhum acesso a sistemas do governo é realizado."
+        description="Use o CPF 000.000.000-00 e qualquer senha fictícia. Este login é uma simulação da conta do cidadão."
         icon="shield"
       />
       <Row style={{ justifyContent: "center" }}>

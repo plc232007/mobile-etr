@@ -22,12 +22,12 @@ O modelo 01 preserva a experiência original. O modelo 02 usa `ClientHomeScreen`
 
 `/pendencias?propertyId=...` restringe os envios ao imóvel correspondente; sem esse parâmetro, mantém a central geral. As etapas dos requerimentos, transições e dados fictícios foram preservados.
 
-`/login`, `/`, `/processos`, `/servicos`, `/alertas`, `/perfil`.
+`/acesso` (entrada geral), `/prototipos` (seleção), `/login` (simulação do cidadão), `/`, `/processos`, `/servicos`, `/alertas`, `/perfil`.
 Detalhes: `/geo`, `/monitora`, `/processo/[id]`, `/pendencias`, `/requerimento`, `/boletos`, `/boleto/[id]`, `/editais`, `/edital/[id]`, `/imoveis`, `/imovel/[id]`, `/documentos`, `/documento/[id]`, `/certidao`, `/mapa/[id]`, `/monitoramento/[id]`, `/jornada`, `/atendimento`, `/agendamento`, `/noticias`, `/noticia/[id]`, `/configuracoes`.
 
 ## Comportamentos
 
-Enviar CAR registra documento como recebido, resolve a pendência de envio e acrescenta movimentação/alerta; não simula aprovação automática pela ETR. Requerimentos têm cinco etapas, rascunho persistido, revisão e protocolo exclusivo local. Acompanhar edital gera alerta mockado. Boletos e PDFs levam identificação de demonstração e não têm validade. A sessão e preferências são locais; não há senha nem autenticação real. Dados carregados continuam disponíveis sem conexão; não há sincronização offline com servidor.
+Enviar CAR registra documento como recebido, resolve a pendência de envio e acrescenta movimentação/alerta; não simula aprovação automática pela ETR. Requerimentos têm cinco etapas, rascunho persistido, revisão e protocolo exclusivo local. Acompanhar edital gera alerta mockado. Boletos e PDFs levam identificação de demonstração e não têm validade. O grupo `(demo)` reúne as rotas dos protótipos e só é montado após o acesso à apresentação. A senha configurada em `EXPO_PUBLIC_ETR_DEMO_PASSWORD` libera essa entrada geral; a sessão da apresentação é independente da sessão fictícia do cidadão. No navegador, apenas a liberação fica em `sessionStorage`; no nativo, ela permanece em memória. As preferências e a sessão simulada do cidadão são locais. Não há autenticação real em servidor. Dados carregados continuam disponíveis sem conexão; não há sincronização offline com servidor.
 
 ## Evolução
 

@@ -12,8 +12,10 @@ A configuração segue a [publicação web do Expo](https://docs.expo.dev/guides
 2. Na Vercel, escolha **Add New → Project** e importe o repositório.
 3. Use **Framework Preset: Other** e a pasta que contém `package.json` como **Root Directory** (a raiz, se este repositório contém somente o aplicativo).
 4. Mantenha as configurações do `vercel.json`: instalação com `npm ci`, build com `npm run build` e saída `dist`. A versão Node.js está fixada em `22.x` no `package.json`.
-5. Não é necessário cadastrar variáveis de ambiente ou conectar banco de dados.
-6. Clique em **Deploy** e abra o endereço gerado. Use **Entrar na demonstração**.
+5. Em **Settings → Environment Variables**, cadastre `EXPO_PUBLIC_ETR_DEMO_PASSWORD` com a senha da demonstração (pelo menos 8 caracteres), selecionando **Production** e **Preview**. O `.env.local` não é enviado ao Git e não configura a Vercel. Não é necessário conectar banco de dados.
+6. Clique em **Deploy** e abra o endereço gerado. Na tela de acesso à apresentação, informe a senha cadastrada. Em seguida, escolha um protótipo. O login de cidadão dentro de cada modelo é simulado: use o CPF `000.000.000-00` e qualquer senha fictícia.
+
+Se aparecer **“A senha da demonstração não foi configurada neste ambiente”**, confira a variável e o ambiente selecionado e faça um **Redeploy**. O Expo incorpora as variáveis `EXPO_PUBLIC_` durante o build; alterar a configuração não atualiza um deploy existente. Veja a [documentação de variáveis do Expo](https://docs.expo.dev/guides/environment-variables/) e a [documentação de variáveis da Vercel](https://vercel.com/docs/environment-variables).
 
 A pasta `dist/` será recriada no build; não precisa ser adicionada ao Git. `node_modules/`, `.expo/`, `.vercel/` e resultados de testes também ficam fora do Git. O build executa a checagem TypeScript antes de exportar a web.
 
@@ -37,11 +39,13 @@ npx vercel --prod
 
 `app.json` mantém `web.output: "single"`. O rewrite de `vercel.json` encaminha as rotas do aplicativo para `/index.html`. Arquivos existentes, como JavaScript e fontes, têm precedência sobre o rewrite. Assim, uma atualização de página em `/edital/03-2026` carrega o aplicativo sem erro 404 de hospedagem. Rotas desconhecidas são tratadas pela tela de página não encontrada do Expo Router.
 
-Rotas pessoais exigem a sessão fictícia local; ao abrir em outro navegador sem sessão, o usuário verá o login.
+Todas as rotas dos protótipos, incluindo sua seleção e seus logins, exigem primeiro o acesso à apresentação em `/acesso`. A sessão de acesso é independente da sessão fictícia do cidadão. Após liberar a apresentação, o visitante escolhe um modelo; as rotas pessoais continuam exigindo o login simulado desse modelo.
 
 ## Conferência depois da publicação
 
-- Abra `/login` e entre na demonstração.
+- Abra `/prototipos` em uma nova sessão de navegador e confirme que a tela de acesso à apresentação aparece primeiro.
+- Informe a senha, escolha um modelo e entre pelo login simulado.
+- Use **Sair da apresentação** na seleção de modelos e confirme que links diretos voltam a exigir a senha.
 - Abra `/processo/regularizacao` diretamente e recarregue a página.
 - Faça o mesmo em `/boletos`, `/requerimento` e `/edital/03-2026`.
 - Confira se os ícones e imagens carregam.

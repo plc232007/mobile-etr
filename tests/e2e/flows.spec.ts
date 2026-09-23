@@ -1,8 +1,13 @@
 import { test, expect, Page } from "@playwright/test";
+import { unlockPresentation } from "./helpers";
+
+test.beforeEach(async ({ page }) => {
+  await unlockPresentation(page);
+});
 async function login(page: Page) {
   await page.goto("/");
   await page.getByLabel("CPF ou CNPJ", { exact: true }).fill("000.000.000-00");
-  await page.getByLabel("Senha", { exact: true }).fill("ETR-demo-2026!");
+  await page.getByLabel("Senha", { exact: true }).fill("senha-ficticia");
   await page.getByRole("button", { name: "Entrar", exact: true }).click();
   await expect(page.getByText("Vamos cuidar da sua terra?")).toBeVisible();
 }

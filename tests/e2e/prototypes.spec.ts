@@ -1,4 +1,9 @@
 import { test, expect } from "@playwright/test";
+import { unlockPresentation } from "./helpers";
+
+test.beforeEach(async ({ page }) => {
+  await unlockPresentation(page);
+});
 
 test("central de serviços: busca, navegação responsiva e troca persistida", async ({
   page,
@@ -14,13 +19,7 @@ test("central de serviços: busca, navegação responsiva e troca persistida", a
     "password",
   );
   await page.getByLabel("CPF ou CNPJ", { exact: true }).fill("000.000.000-00");
-  await page.getByRole("button", { name: "Continuar", exact: true }).click();
-  await expect(
-    page.getByText("A senha deve ter pelo menos 8 caracteres.", {
-      exact: true,
-    }),
-  ).toBeVisible();
-  await page.getByLabel("Senha", { exact: true }).fill("ETR-demo-2026!");
+  await page.getByLabel("Senha", { exact: true }).fill("senha-ficticia");
   await page.getByRole("button", { name: "Entrar", exact: true }).click();
   await expect(
     page.getByRole("heading", { name: "O que você precisa?" }),
@@ -91,7 +90,7 @@ test("ETR GEO aparece como serviço e não interfere no Monitora", async ({
     .getByRole("button", { name: "Explorar Central de Serviços" })
     .click();
   await page.getByLabel("CPF ou CNPJ", { exact: true }).fill("000.000.000-00");
-  await page.getByLabel("Senha", { exact: true }).fill("ETR-demo-2026!");
+  await page.getByLabel("Senha", { exact: true }).fill("senha-ficticia");
   await page.getByRole("button", { name: "Entrar", exact: true }).click();
   await page.goto("/servicos");
   await expect(
